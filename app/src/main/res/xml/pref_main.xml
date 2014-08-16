@@ -8,31 +8,43 @@
         android:title="@string/pref_title_open_app" />
 
     <CheckBoxPreference
-        android:key="key_show_custom_quote"
-        android:title="@string/pref_title_show_custom_quote"
-        android:summary="@string/pref_description_show_custom_quote"
-        android:defaultValue="true" />
+        android:key="key_show_extras"
+        android:title="@string/pref_title_extras" />
+
+    <ListPreference
+        android:dependency="key_show_extras"
+        android:key="key_behaviour"
+        android:title="@string/pref_title_choose_tag"
+        android:summary="@string/pref_description_choose_tag"
+        android:entries="@array/pref_tags_entries"
+        android:entryValues="@array/pref_tags_values" />
+
+    <PreferenceCategory
+        android:title="@string/pref_header_extras" />
 
     <EditTextPreference
-        android:dependency="key_show_custom_quote"
+        android:dependency="key_show_extras"
         android:key="key_custom_quote"
         android:title="@string/pref_title_custom_quote"
+        android:summary="@string/pref_description_custom_quote"
         android:singleLine="true"
         android:maxLines="1" />
 
-    <PreferenceCategory
-        android:title="@string/pref_header_theme" />
+    <EditTextPreference
+        android:dependency="key_show_extras"
+        android:key="key_location"
+        android:title="@string/pref_title_weather_location"
+        android:summary="@string/pref_description_weather_location"
+        android:singleLine="true"
+        android:maxLines="1" />
 
-        <!-- <ListPreference
-            android:dependency="key_enable_theme"
-            android:key="key_clock_font"
-            android:title="@string/pref_title_clock_font"
-            android:entries="@array/pref_clock_font_entries"
-            android:entryValues="@array/pref_clock_font_values" /> -->
-
-        <CheckBoxPreference
-            android:key="key_show_quote"
-            android:title="@string/pref_title_quote_show" />
+    <EditTextPreference
+        android:dependency="key_show_extras"
+        android:key="key_custom_quote"
+        android:title="@string/pref_title_reddit"
+        android:summary="@string/pref_description_reddit"
+        android:singleLine="true"
+        android:maxLines="1" />
 
         <CheckBoxPreference
             android:key="key_show_bt"

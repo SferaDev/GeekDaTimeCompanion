@@ -1,18 +1,51 @@
 <resources>
     <string name="pref_title_open_app">Open Geek The Time on your Pebble</string>
     <string name="pref_header_general">General</string>
-    <string name="pref_header_theme">Theme your Clock</string>
+    <string name="pref_header_extras">Extras</string>
     <string name="pref_header_about">About Geek The Time</string>
 
-    <string name="pref_title_show_custom_quote">Enable Custom Quote</string>
-    <string name="pref_description_show_custom_quote">This will disable random quotes</string>
-    <string name="pref_title_custom_quote">Custom Quote</string>
+    <string name="pref_title_extras">Show Extra Information</string>
+    <string name="pref_title_choose_tag">Choose Desired Behavior</string>
+    <string name="pref_description_choose_tag">Select the information the Watch Face should present</string>
+    <string-array name="pref_tags_entries">
+        <item>Random Quote</item>
+        <item>Custom Sentence</item>
+        <item>Last Notification</item>
+        <item>Weather</item>
+        <item>Date</item>
+        <item>Random News</item>
+        <item>Reddit Content</item>
+        <item>Carrier Name</item>
+        <item>Phone Battery</item>
+    </string-array>
+    <string-array name="pref_tags_values">
+        <item>RANDOM_QUOTE</item>
+        <item>CUSTOM_SENTENCE</item>
+        <item>LAST_NOTIFICATION</item>
+        <item>WEATHER</item>
+        <item>DATE</item>
+        <item>RANDOM_NEWS</item>
+        <item>REDDIT_CONTENT</item>
+        <item>CARRIER</item>
+        <item>PHONE_BATTERY</item>
+    </string-array>
+
+    <string name="pref_title_custom_quote">Custom Sentence</string>
+    <string name="pref_title_weather_location">Weather Location</string>
+    <string name="pref_title_reddit">Reddit Integration</string>
+
+    <string name="pref_description_custom_quote">Enter the desired tag</string>
+    <string name="pref_description_weather_location">Enter your city name</string>
+    <string name="pref_description_reddit">Enter your favourite subreddit</string>
 
     <string name="pref_title_enable_theme">Enable Theme Options</string>
-    <string name="pref_title_quote_show">Show Quote</string>
     <string name="pref_title_bt_show">Show Bluetooth Status</string>
     <string name="pref_title_battery_show">Show Battery Status</string>
 
+    <string name="pref_title_about_xda">Geek The Time on XDA</string>
+
+
+    <!-- TODO -->
     <string name="pref_title_clock_font">Clock Font</string>
     <string-array name="pref_clock_font_entries">
         <item>Bitham Light</item>
@@ -24,6 +57,4 @@
         <item>FONT_KEY_BITHAM_42_BOLD</item>
         <item>FONT_KEY_ROBOTO_49_BOLD_SUBSET</item>
     </string-array>
-
-    <string name="pref_title_about_xda">Geek The Time on XDA</string>
 </resources>
