@@ -1,2 +1,2 @@
 include ':app'
-include ':pEBBLE_KIT'
+include ':PebbleKit'
