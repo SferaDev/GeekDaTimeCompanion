@@ -1,0 +1,65 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="key_test"
+        android:title="Test it" />
+
+    <PreferenceScreen
+        android:title="@string/pref_header_general">
+
+        <CheckBoxPreference
+            android:key="key_show_custom_quote"
+            android:title="@string/pref_title_show_custom_quote"
+            android:summary="@string/pref_description_show_custom_quote"
+            android:defaultValue="true" />
+
+        <EditTextPreference
+            android:dependency="key_show_custom_quote"
+            android:key="key_custom_quote"
+            android:title="@string/pref_title_custom_quote"
+            android:defaultValue="@string/pref_default_quote"
+            android:singleLine="true"
+            android:maxLines="1" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/pref_header_theme">
+
+        <CheckBoxPreference
+            android:key="key_enable_theme"
+            android:title="@string/pref_title_enable_theme"
+            android:defaultValue="false" />
+
+        <PreferenceCategory
+            android:title="Clock" />
+
+        <ListPreference
+            android:dependency="key_enable_theme"
+            android:key="key_time_font"
+            android:title="@string/pref_title_time_font"
+            android:entries="@array/pref_time_font_entries"
+            android:entryValues="@array/pref_time_font_values" />
+        <!-- TODO Replicate on all theme options -->
+
+        <PreferenceCategory
+            android:title="Quote" />
+
+        <CheckBoxPreference
+            android:dependency="key_enable_theme"
+            android:key="key_show_quote"
+            android:title="@string/pref_title_show_quote"
+            android:defaultValue="true" />
+        <!-- TODO Replicate on all theme options -->
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/pref_header_about">
+
+        <Preference android:title="@string/pref_title_about_xda">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+
+    </PreferenceScreen>
+</PreferenceScreen>
