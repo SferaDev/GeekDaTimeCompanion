@@ -60,7 +60,9 @@
         android:title="@string/pref_header_about" />
 
         <Preference android:title="@string/pref_title_about_xda">
-            <intent android:action="android.settings.SYNC_SETTINGS" />
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://goo.gl/gC3hgK" />
         </Preference>
 
 </PreferenceScreen>
