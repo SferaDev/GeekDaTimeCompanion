@@ -7,12 +7,7 @@
         android:key="key_open_app"
         android:title="@string/pref_title_open_app" />
 
-    <CheckBoxPreference
-        android:key="key_show_extras"
-        android:title="@string/pref_title_extras" />
-
     <ListPreference
-        android:dependency="key_show_extras"
         android:key="key_behaviour"
         android:title="@string/pref_title_choose_tag"
         android:summary="@string/pref_description_choose_tag"
@@ -23,15 +18,13 @@
         android:title="@string/pref_header_extras" />
 
     <EditTextPreference
-        android:dependency="key_show_extras"
-        android:key="key_custom_quote"
+        android:key="key_custom_tag"
         android:title="@string/pref_title_custom_quote"
         android:summary="@string/pref_description_custom_quote"
         android:singleLine="true"
         android:maxLines="1" />
 
     <EditTextPreference
-        android:dependency="key_show_extras"
         android:key="key_location"
         android:title="@string/pref_title_weather_location"
         android:summary="@string/pref_description_weather_location"
@@ -39,30 +32,29 @@
         android:maxLines="1" />
 
     <EditTextPreference
-        android:dependency="key_show_extras"
-        android:key="key_custom_quote"
+        android:key="key_reddit"
         android:title="@string/pref_title_reddit"
         android:summary="@string/pref_description_reddit"
         android:singleLine="true"
         android:maxLines="1" />
 
-        <CheckBoxPreference
-            android:key="key_show_bt"
-            android:title="@string/pref_title_bt_show"
-            android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="key_show_bt"
+        android:title="@string/pref_title_bt_show"
+        android:defaultValue="true" />
 
-        <CheckBoxPreference
-            android:key="key_show_battery"
-            android:title="@string/pref_title_battery_show"
-            android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="key_show_battery"
+        android:title="@string/pref_title_battery_show"
+        android:defaultValue="true" />
 
     <PreferenceCategory
         android:title="@string/pref_header_about" />
 
-        <Preference android:title="@string/pref_title_about_xda">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="http://goo.gl/gC3hgK" />
-        </Preference>
+    <Preference android:title="@string/pref_title_about_xda">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://goo.gl/gC3hgK" />
+    </Preference>
 
 </PreferenceScreen>
