@@ -10,10 +10,10 @@ import java.util.UUID;
 public class Utils {
 
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
-    public static int KEY_TAG = 0; //Custom tag
-    public static int KEY_WIP = 1; //Show tag
-    public static int KEY_SHOW_BT = 2; //Show bt
-    public static int KEY_SHOW_BATTERY = 3; //Show battery
+    public final static int KEY_TAG = 0; //Custom tag
+    public final static int KEY_WIP = 1; //Show tag
+    public final static int KEY_SHOW_BT = 2; //Show bt
+    public final static int KEY_SHOW_BATTERY = 3; //Show battery
 
     public static void startAppOnPebble() {
         PebbleKit.startAppOnPebble(App.getContext(), Utils.PEBBLE_APP_UUID);
