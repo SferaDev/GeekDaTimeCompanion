@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
+import static com.sferadev.geekthetime.companion.Utils.*;
+
 public class GeekActivity extends PreferenceActivity {
 
     @Override
@@ -15,8 +17,17 @@ public class GeekActivity extends PreferenceActivity {
                 new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        Utils.startAppOnPebble();
+                        startAppOnPebble();
                         return false;
+                    }
+                }
+        );
+        getPreferenceScreen().findPreference("key_behaviour").setOnPreferenceChangeListener(
+                new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object object) {
+                        updateBehaviour(object.toString());
+                        return true;
                     }
                 }
         );
@@ -24,26 +35,8 @@ public class GeekActivity extends PreferenceActivity {
                 new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object object) {
-                        Utils.sendString(Utils.KEY_TAG, object.toString());
+                        sendString(KEY_TAG, object.toString());
                         preference.setSummary(object.toString());
-                        return true;
-                    }
-                }
-        );
-        getPreferenceScreen().findPreference("key_show_bt").setOnPreferenceChangeListener(
-                new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object object) {
-                        Utils.sendInt(Utils.KEY_SHOW_BT, (Boolean.parseBoolean(object.toString()) ? 1 : 0));
-                        return true;
-                    }
-                }
-        );
-        getPreferenceScreen().findPreference("key_show_battery").setOnPreferenceChangeListener(
-                new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object object) {
-                        Utils.sendInt(Utils.KEY_SHOW_BATTERY, (Boolean.parseBoolean(object.toString()) ? 1 : 0));
                         return true;
                     }
                 }

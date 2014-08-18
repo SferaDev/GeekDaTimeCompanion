@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GeekDaTimeCompanion.iml" filepath="$PROJECT_DIR$/GeekDaTimeCompanion.iml" />
-      <module fileurl="file://$PROJECT_DIR$/GeekTheTimeCompanionApp.iml" filepath="$PROJECT_DIR$/GeekTheTimeCompanionApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/PebbleKit/PebbleKit.iml" filepath="$PROJECT_DIR$/PebbleKit/PebbleKit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

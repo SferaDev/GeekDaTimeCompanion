@@ -38,7 +38,7 @@
         android:singleLine="true"
         android:maxLines="1" />
 
-    <CheckBoxPreference
+    <!--<CheckBoxPreference
         android:key="key_show_bt"
         android:title="@string/pref_title_bt_show"
         android:defaultValue="true" />
@@ -46,7 +46,7 @@
     <CheckBoxPreference
         android:key="key_show_battery"
         android:title="@string/pref_title_battery_show"
-        android:defaultValue="true" />
+        android:defaultValue="true" />-->
 
     <PreferenceCategory
         android:title="@string/pref_header_about" />
