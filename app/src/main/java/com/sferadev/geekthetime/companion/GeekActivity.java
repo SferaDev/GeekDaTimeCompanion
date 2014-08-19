@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static com.sferadev.geekthetime.companion.Utils.*;
 
 public class GeekActivity extends PreferenceActivity {
@@ -18,6 +21,11 @@ public class GeekActivity extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         startAppOnPebble();
+                        try {
+                            getFile(new URL(downloadURL), "quotes.txt");
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                         return false;
                     }
                 }
