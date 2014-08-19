@@ -16,12 +16,15 @@ import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -62,7 +65,7 @@ public class Utils {
             //TODO
             case "RANDOM_QUOTE":
                 //sendString(KEY_TAG, getRandomLine("quotes.txt"));
-                createToast(getRandomLine("quotes.txt"));
+                //createToast(getRandomLine("quotes.txt"));
                 break;
             case "CUSTOM_SENTENCE":
                 //TODO
@@ -117,11 +120,19 @@ public class Utils {
     public static String getRandomLine(String fileName) {
         String theLine = "None";
         try {
-            FileReader fr = new FileReader(downloadLocation + "/" + fileName);
-            LineNumberReader rdr = new LineNumberReader(fr);
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(
+                            new DataInputStream(
+                                    new FileInputStream(downloadLocation + "/" + fileName))));
+            int numLines = 3;
+            //while (br.readLine() != null) numLines++;
+
             Random r = new Random();
-            rdr.setLineNumber(r.nextInt());
-            theLine = rdr.readLine();
+
+            LineNumberReader rdr = new LineNumberReader(br);
+            rdr.setLineNumber(r.nextInt(numLines));
+            rdr.mark(r.nextInt(numLines));
+            return rdr.readLine();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
