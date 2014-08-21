@@ -1,8 +1,10 @@
 package com.sferadev.geekthetime.companion;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Environment;
 import android.preference.Preference;
@@ -30,7 +32,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.prefs.Preferences;
@@ -60,15 +64,24 @@ public class Utils {
         toast.show();
     }
 
+    public static boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void updateBehaviour(String string) {
         switch (string) {
             //TODO
             case "RANDOM_QUOTE":
-                //sendString(KEY_TAG, getRandomLine("quotes.txt"));
-                //createToast(getRandomLine("quotes.txt"));
+                sendString(KEY_TAG, getRandomLine("quotes.txt"));
                 break;
             case "CUSTOM_SENTENCE":
-                //TODO
+                sendString(KEY_TAG, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_custom_tag", "Not found"));
                 break;
             case "DATE":
                 sendString(KEY_TAG, getDate());
@@ -77,10 +90,10 @@ public class Utils {
                 sendString(KEY_TAG, getCarrier());
                 break;
             case "PHONE_BATTERY":
-                sendString(KEY_TAG, "Phone has" + getBatteryLevel());
+                sendString(KEY_TAG, "Phone has " + getBatteryLevel());
                 break;
             default:
-                sendString(KEY_TAG, string);
+                sendString(KEY_TAG, "Coming Soon!");
                 //throw new IllegalArgumentException("Invalid option" + object.toString());
         }
     }
@@ -120,19 +133,16 @@ public class Utils {
     public static String getRandomLine(String fileName) {
         String theLine = "None";
         try {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(
-                            new DataInputStream(
-                                    new FileInputStream(downloadLocation + "/" + fileName))));
-            int numLines = 3;
-            //while (br.readLine() != null) numLines++;
-
+            // Read in the file into a list of strings
+            BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + fileName));
+            List<String> lines = new ArrayList<String>();
+            String line = reader.readLine();
+            while( line != null ) {
+                lines.add(line);
+                line = reader.readLine();
+            }
             Random r = new Random();
-
-            LineNumberReader rdr = new LineNumberReader(br);
-            rdr.setLineNumber(r.nextInt(numLines));
-            rdr.mark(r.nextInt(numLines));
-            return rdr.readLine();
+            return lines.get(r.nextInt(lines.size()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

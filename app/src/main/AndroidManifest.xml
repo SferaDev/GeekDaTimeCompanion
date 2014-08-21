@@ -37,6 +37,7 @@
 
         <service
             android:name=".UpdateService"
+            android:process=":background"
             android:enabled="true"
             android:exported="false" >
         </service>

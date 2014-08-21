@@ -1,11 +1,9 @@
 package com.sferadev.geekthetime.companion;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import static com.sferadev.geekthetime.companion.Utils.*;
 
@@ -14,7 +12,10 @@ public class GeekActivity extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWeather();
+        if (!isServiceRunning(UpdateService.class)) {
+            Intent i= new Intent(this, UpdateService.class);
+            this.startService(i);
+        }
         addPreferencesFromResource(R.xml.pref_main);
         getPreferenceScreen().findPreference("key_open_app").setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
@@ -38,24 +39,12 @@ public class GeekActivity extends PreferenceActivity {
                 new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object object) {
-                        sendString(KEY_TAG, object.toString());
+                        //sendString(KEY_TAG, object.toString());
                         preference.setSummary(object.toString());
                         return true;
                     }
                 }
         );
-    }
-
-    private void getWeather() {
-        /*LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, longitude + "," + latitude, duration);
-        toast.show();*/
     }
 
 }
