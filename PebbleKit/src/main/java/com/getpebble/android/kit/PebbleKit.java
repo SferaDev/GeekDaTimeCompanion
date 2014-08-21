@@ -9,14 +9,50 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
-import com.getpebble.android.kit.Constants.*;
+
+import com.getpebble.android.kit.Constants.PebbleAppType;
+import com.getpebble.android.kit.Constants.PebbleDataType;
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.google.common.primitives.UnsignedInteger;
+
 import org.json.JSONException;
 
 import java.util.UUID;
 
-import static com.getpebble.android.kit.Constants.*;
+import static com.getpebble.android.kit.Constants.APP_UUID;
+import static com.getpebble.android.kit.Constants.CUST_APP_TYPE;
+import static com.getpebble.android.kit.Constants.CUST_ICON;
+import static com.getpebble.android.kit.Constants.CUST_NAME;
+import static com.getpebble.android.kit.Constants.DATA_LOG_TAG;
+import static com.getpebble.android.kit.Constants.DATA_LOG_TIMESTAMP;
+import static com.getpebble.android.kit.Constants.DATA_LOG_UUID;
+import static com.getpebble.android.kit.Constants.INTENT_APP_ACK;
+import static com.getpebble.android.kit.Constants.INTENT_APP_CUSTOMIZE;
+import static com.getpebble.android.kit.Constants.INTENT_APP_NACK;
+import static com.getpebble.android.kit.Constants.INTENT_APP_RECEIVE;
+import static com.getpebble.android.kit.Constants.INTENT_APP_RECEIVE_ACK;
+import static com.getpebble.android.kit.Constants.INTENT_APP_RECEIVE_NACK;
+import static com.getpebble.android.kit.Constants.INTENT_APP_SEND;
+import static com.getpebble.android.kit.Constants.INTENT_APP_START;
+import static com.getpebble.android.kit.Constants.INTENT_APP_STOP;
+import static com.getpebble.android.kit.Constants.INTENT_DL_ACK_DATA;
+import static com.getpebble.android.kit.Constants.INTENT_DL_FINISH_SESSION;
+import static com.getpebble.android.kit.Constants.INTENT_DL_RECEIVE_DATA;
+import static com.getpebble.android.kit.Constants.INTENT_DL_REQUEST_DATA;
+import static com.getpebble.android.kit.Constants.INTENT_PEBBLE_CONNECTED;
+import static com.getpebble.android.kit.Constants.INTENT_PEBBLE_DISCONNECTED;
+import static com.getpebble.android.kit.Constants.KIT_STATE_COLUMN_APPMSG_SUPPORT;
+import static com.getpebble.android.kit.Constants.KIT_STATE_COLUMN_CONNECTED;
+import static com.getpebble.android.kit.Constants.KIT_STATE_COLUMN_DATALOGGING_SUPPORT;
+import static com.getpebble.android.kit.Constants.KIT_STATE_COLUMN_VERSION_MAJOR;
+import static com.getpebble.android.kit.Constants.KIT_STATE_COLUMN_VERSION_MINOR;
+import static com.getpebble.android.kit.Constants.KIT_STATE_COLUMN_VERSION_POINT;
+import static com.getpebble.android.kit.Constants.KIT_STATE_COLUMN_VERSION_TAG;
+import static com.getpebble.android.kit.Constants.MSG_DATA;
+import static com.getpebble.android.kit.Constants.PBL_DATA_ID;
+import static com.getpebble.android.kit.Constants.PBL_DATA_OBJECT;
+import static com.getpebble.android.kit.Constants.PBL_DATA_TYPE;
+import static com.getpebble.android.kit.Constants.TRANSACTION_ID;
 
 /**
  * A helper class providing methods for interacting with third-party Pebble Smartwatch applications. Pebble-enabled
@@ -46,19 +82,13 @@ public final class PebbleKit {
      * third-party Android applications to apply custom branding (both name & icon) on the watch without needing to
      * distribute a complete watch-app.
      *
-     * @param context
-     *         The context used to send the broadcast. (Protip: pass in the ApplicationContext here.)
-     * @param appType
-     *         The watch-app to be configured. Options are either
-     * @param name
-     *         The custom name to be applied to the watch-app. Names must be less than 32 characters in length.
-     * @param icon
-     *         The custom icon to be applied to the watch-app. Icons must be black-and-white bitmaps no larger than 32px
-     *         in either dimension.
-     *
-     * @throws IllegalArgumentException
-     *         Thrown if the specified name or icon are invalid. {@link PebbleAppType#SPORTS} or {@link
-     *         PebbleAppType#GOLF}.
+     * @param context The context used to send the broadcast. (Protip: pass in the ApplicationContext here.)
+     * @param appType The watch-app to be configured. Options are either
+     * @param name    The custom name to be applied to the watch-app. Names must be less than 32 characters in length.
+     * @param icon    The custom icon to be applied to the watch-app. Icons must be black-and-white bitmaps no larger than 32px
+     *                in either dimension.
+     * @throws IllegalArgumentException Thrown if the specified name or icon are invalid. {@link PebbleAppType#SPORTS} or {@link
+     *                                  PebbleAppType#GOLF}.
      */
     public static void customizeWatchApp(final Context context, final PebbleAppType appType,
                                          final String name, final Bitmap icon) throws IllegalArgumentException {
@@ -88,13 +118,11 @@ public final class PebbleKit {
     /**
      * Synchronously query the Pebble application to see if an active Bluetooth connection to a watch currently exists.
      *
-     * @param context
-     *         The Android context used to perform the query.
-     *         <p/>
-     *         <em>Protip:</em> You probably want to use your ApplicationContext here.
-     *
+     * @param context The Android context used to perform the query.
+     *                <p/>
+     *                <em>Protip:</em> You probably want to use your ApplicationContext here.
      * @return true if an active connection to the watch currently exists, otherwise false. This method will also return
-     *         false if the Pebble application is not installed on the user's handset.
+     * false if the Pebble application is not installed on the user's handset.
      */
     public static boolean isWatchConnected(final Context context) {
         Cursor c =
@@ -111,13 +139,11 @@ public final class PebbleKit {
      * Synchronously query the Pebble application to see if the connected watch is running a firmware version that
      * supports PebbleKit messages.
      *
-     * @param context
-     *         The Android context used to perform the query.
-     *         <p/>
-     *         <em>Protip:</em> You probably want to use your ApplicationContext here.
-     *
+     * @param context The Android context used to perform the query.
+     *                <p/>
+     *                <em>Protip:</em> You probably want to use your ApplicationContext here.
      * @return true if the watch supports PebbleKit messages, otherwise false. This method will always return false if
-     *         no Pebble is currently connected to the handset.
+     * no Pebble is currently connected to the handset.
      */
     public static boolean areAppMessagesSupported(final Context context) {
         Cursor c =
@@ -130,17 +156,15 @@ public final class PebbleKit {
         return c.getInt(KIT_STATE_COLUMN_APPMSG_SUPPORT) == 1;
     }
 
-    
+
     /**
      * Get the version information of the firmware running on a connected watch.
      *
-     * @param context
-     *         The Android context used to perform the query.
-     *         <p/>
-     *         <em>Protip:</em> You probably want to use your ApplicationContext here.
-     *
+     * @param context The Android context used to perform the query.
+     *                <p/>
+     *                <em>Protip:</em> You probably want to use your ApplicationContext here.
      * @return null if the watch is disconnected or we can't get the version. Otherwise,
-     *         a FirmwareVersionObject containing info on the watch FW version
+     * a FirmwareVersionObject containing info on the watch FW version
      */
     public static FirmwareVersionInfo getWatchFWVersion(final Context context) {
         Cursor c =
@@ -150,12 +174,12 @@ public final class PebbleKit {
         if (c == null || !c.moveToNext()) {
             return null;
         }
-        
+
         int majorVersion = c.getInt(KIT_STATE_COLUMN_VERSION_MAJOR);
         int minorVersion = c.getInt(KIT_STATE_COLUMN_VERSION_MINOR);
         int pointVersion = c.getInt(KIT_STATE_COLUMN_VERSION_POINT);
         String versionTag = c.getString(KIT_STATE_COLUMN_VERSION_TAG);
-        
+
         return new FirmwareVersionInfo(majorVersion, minorVersion, pointVersion, versionTag);
     }
 
@@ -163,13 +187,11 @@ public final class PebbleKit {
      * Synchronously query the Pebble application to see if the connected watch is running a firmware version that
      * supports PebbleKit data logging.
      *
-     * @param context
-     *         The Android context used to perform the query.
-     *         <p/>
-     *         <em>Protip:</em> You probably want to use your ApplicationContext here.
-     *
+     * @param context The Android context used to perform the query.
+     *                <p/>
+     *                <em>Protip:</em> You probably want to use your ApplicationContext here.
      * @return true if the watch supports PebbleKit messages, otherwise false. This method will always return false if
-     *         no Pebble is currently connected to the handset.
+     * no Pebble is currently connected to the handset.
      */
     public static boolean isDataLoggingSupported(final Context context) {
         Cursor c =
@@ -186,14 +208,10 @@ public final class PebbleKit {
      * Send a message to the connected Pebble to launch an application identified by a UUID. If another application is
      * currently running it will be terminated and the new application will be brought to the foreground.
      *
-     * @param context
-     *         The context used to send the broadcast.
-     * @param watchappUuid
-     *         A UUID uniquely identifying the target application. UUIDs for the stock PebbleKit applications are
-     *         available in {@link Constants}.
-     *
-     * @throws IllegalArgumentException
-     *         Thrown if the specified UUID is invalid.
+     * @param context      The context used to send the broadcast.
+     * @param watchappUuid A UUID uniquely identifying the target application. UUIDs for the stock PebbleKit applications are
+     *                     available in {@link Constants}.
+     * @throws IllegalArgumentException Thrown if the specified UUID is invalid.
      */
     public static void startAppOnPebble(final Context context, final UUID watchappUuid)
             throws IllegalArgumentException {
@@ -211,14 +229,10 @@ public final class PebbleKit {
      * Send a message to the connected Pebble to close an application identified by a UUID. If this application is not
      * currently running, the message is ignored.
      *
-     * @param context
-     *         The context used to send the broadcast.
-     * @param watchappUuid
-     *         A UUID uniquely identifying the target application. UUIDs for the stock kit applications are available in
-     *         {@link Constants}.
-     *
-     * @throws IllegalArgumentException
-     *         Thrown if the specified UUID is invalid.
+     * @param context      The context used to send the broadcast.
+     * @param watchappUuid A UUID uniquely identifying the target application. UUIDs for the stock kit applications are available in
+     *                     {@link Constants}.
+     * @throws IllegalArgumentException Thrown if the specified UUID is invalid.
      */
     public static void closeAppOnPebble(final Context context, final UUID watchappUuid)
             throws IllegalArgumentException {
@@ -239,17 +253,12 @@ public final class PebbleKit {
      * The watch-app and phone-app must agree of the set and type of key-value pairs being exchanged. Type mismatches or
      * missing keys will cause errors on the receiver's end.
      *
-     * @param context
-     *         The context used to send the broadcast.
-     * @param watchappUuid
-     *         A UUID uniquely identifying the target application. UUIDs for the stock kit applications are available in
-     *         {@link Constants}.
-     * @param data
-     *         A dictionary containing one-or-more key-value pairs. For more information about the types of data that
-     *         can be stored, see {@link PebbleDictionary}.
-     *
-     * @throws IllegalArgumentException
-     *         Thrown in the specified PebbleDictionary or UUID is invalid.
+     * @param context      The context used to send the broadcast.
+     * @param watchappUuid A UUID uniquely identifying the target application. UUIDs for the stock kit applications are available in
+     *                     {@link Constants}.
+     * @param data         A dictionary containing one-or-more key-value pairs. For more information about the types of data that
+     *                     can be stored, see {@link PebbleDictionary}.
+     * @throws IllegalArgumentException Thrown in the specified PebbleDictionary or UUID is invalid.
      */
     public static void sendDataToPebble(final Context context, final UUID watchappUuid,
                                         final PebbleDictionary data) throws IllegalArgumentException {
@@ -263,20 +272,14 @@ public final class PebbleKit {
      * The watch-app and phone-app must agree of the set and type of key-value pairs being exchanged. Type mismatches or
      * missing keys will cause errors on the receiver's end.
      *
-     * @param context
-     *         The context used to send the broadcast.
-     * @param watchappUuid
-     *         A UUID uniquely identifying the target application. UUIDs for the stock kit applications are available in
-     *         {@link Constants}.
-     * @param data
-     *         A dictionary containing one-or-more key-value pairs. For more information about the types of data that
-     *         can be stored, see {@link PebbleDictionary}.
-     * @param transactionId
-     *         An integer uniquely identifying the transaction. This can be used to correlate messages sent to the
-     *         Pebble and ACK/NACKs received from the Pebble.
-     *
-     * @throws IllegalArgumentException
-     *         Thrown in the specified PebbleDictionary or UUID is invalid.
+     * @param context       The context used to send the broadcast.
+     * @param watchappUuid  A UUID uniquely identifying the target application. UUIDs for the stock kit applications are available in
+     *                      {@link Constants}.
+     * @param data          A dictionary containing one-or-more key-value pairs. For more information about the types of data that
+     *                      can be stored, see {@link PebbleDictionary}.
+     * @param transactionId An integer uniquely identifying the transaction. This can be used to correlate messages sent to the
+     *                      Pebble and ACK/NACKs received from the Pebble.
+     * @throws IllegalArgumentException Thrown in the specified PebbleDictionary or UUID is invalid.
      */
     public static void sendDataToPebbleWithTransactionId(final Context context,
                                                          final UUID watchappUuid, final PebbleDictionary data, final int transactionId)
@@ -305,14 +308,10 @@ public final class PebbleKit {
      * Send a message to the connected watch acknowledging the receipt of a PebbleDictionary. To avoid protocol timeouts
      * on the watch, applications <em>must</em> ACK or NACK all received messages.
      *
-     * @param context
-     *         The context used to send the broadcast.
-     * @param transactionId
-     *         The transaction id of the message in which the data was received. Valid transaction IDs are between (0,
-     *         255).
-     *
-     * @throws IllegalArgumentException
-     *         Thrown if an invalid transaction id is specified.
+     * @param context       The context used to send the broadcast.
+     * @param transactionId The transaction id of the message in which the data was received. Valid transaction IDs are between (0,
+     *                      255).
+     * @throws IllegalArgumentException Thrown if an invalid transaction id is specified.
      */
     public static void sendAckToPebble(final Context context, final int transactionId)
             throws IllegalArgumentException {
@@ -331,14 +330,10 @@ public final class PebbleKit {
      * Send a message to the connected watch that the previously sent PebbleDictionary was not received successfully. To
      * avoid protocol timeouts on the watch, applications <em>must</em> ACK or NACK all received messages.
      *
-     * @param context
-     *         The context used to send the broadcast.
-     * @param transactionId
-     *         The transaction id of the message in which the data was received. Valid transaction IDs are between (0,
-     *         255).
-     *
-     * @throws IllegalArgumentException
-     *         Thrown if an invalid transaction id is specified.
+     * @param context       The context used to send the broadcast.
+     * @param transactionId The transaction id of the message in which the data was received. Valid transaction IDs are between (0,
+     *                      255).
+     * @throws IllegalArgumentException Thrown if an invalid transaction id is specified.
      */
     public static void sendNackToPebble(final Context context, final int transactionId)
             throws IllegalArgumentException {
@@ -359,13 +354,9 @@ public final class PebbleKit {
      * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
      * Activity's {@link android.app.Activity#onPause()} method.
      *
-     * @param context
-     *         The context in which to register the BroadcastReceiver.
-     * @param receiver
-     *         The receiver to be registered.
-     *
+     * @param context  The context in which to register the BroadcastReceiver.
+     * @param receiver The receiver to be registered.
      * @return The registered receiver.
-     *
      * @see Constants#INTENT_PEBBLE_CONNECTED
      */
     public static BroadcastReceiver registerPebbleConnectedReceiver(final Context context,
@@ -380,13 +371,9 @@ public final class PebbleKit {
      * Go avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
      * Activity's {@link android.app.Activity#onPause()} method.
      *
-     * @param context
-     *         The context in which to register the BroadcastReceiver.
-     * @param receiver
-     *         The receiver to be registered.
-     *
+     * @param context  The context in which to register the BroadcastReceiver.
+     * @param receiver The receiver to be registered.
      * @return The registered receiver.
-     *
      * @see Constants#INTENT_PEBBLE_DISCONNECTED
      */
     public static BroadcastReceiver registerPebbleDisconnectedReceiver(final Context context,
@@ -400,13 +387,9 @@ public final class PebbleKit {
      * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
      * Activity's {@link android.app.Activity#onPause()} method.
      *
-     * @param context
-     *         The context in which to register the BroadcastReceiver.
-     * @param receiver
-     *         The receiver to be registered.
-     *
+     * @param context  The context in which to register the BroadcastReceiver.
+     * @param receiver The receiver to be registered.
      * @return The registered receiver.
-     *
      * @see Constants#INTENT_APP_RECEIVE
      */
     public static BroadcastReceiver registerReceivedDataHandler(final Context context,
@@ -422,13 +405,9 @@ public final class PebbleKit {
      * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
      * Activity's {@link android.app.Activity#onPause()} method.
      *
-     * @param context
-     *         The context in which to register the BroadcastReceiver.
-     * @param receiver
-     *         The receiver to be registered.
-     *
+     * @param context  The context in which to register the BroadcastReceiver.
+     * @param receiver The receiver to be registered.
      * @return The registered receiver.
-     *
      * @see Constants#INTENT_APP_RECEIVE_ACK
      */
     public static BroadcastReceiver registerReceivedAckHandler(final Context context,
@@ -443,13 +422,9 @@ public final class PebbleKit {
      * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
      * Activity's {@link android.app.Activity#onPause()} method.
      *
-     * @param context
-     *         The context in which to register the BroadcastReceiver.
-     * @param receiver
-     *         The receiver to be registered.
-     *
+     * @param context  The context in which to register the BroadcastReceiver.
+     * @param receiver The receiver to be registered.
      * @return The registered receiver.
-     *
      * @see Constants#INTENT_APP_RECEIVE_NACK
      */
     public static BroadcastReceiver registerReceivedNackHandler(final Context context,
@@ -460,13 +435,9 @@ public final class PebbleKit {
     /**
      * Register broadcast receiver internal.
      *
-     * @param context
-     *         the context
-     * @param action
-     *         the action
-     * @param receiver
-     *         the receiver
-     *
+     * @param context  the context
+     * @param action   the action
+     * @param receiver the receiver
      * @return the broadcast receiver
      */
     private static BroadcastReceiver registerBroadcastReceiverInternal(final Context context,
@@ -478,6 +449,47 @@ public final class PebbleKit {
         IntentFilter filter = new IntentFilter(action);
         context.registerReceiver(receiver, filter);
         return receiver;
+    }
+
+    /**
+     * A convenience function to assist in programatically registering a broadcast receiver for the 'DATA_AVAILABLE'
+     * intent.
+     * <p/>
+     * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
+     * Activity's {@link android.app.Activity#onPause()} method.
+     *
+     * @param context  The context in which to register the BroadcastReceiver.
+     * @param receiver The receiver to be registered.
+     * @return The registered receiver.
+     * @see Constants#INTENT_DL_RECEIVE_DATA
+     */
+    public static BroadcastReceiver registerDataLogReceiver(final Context context,
+                                                            final PebbleDataLogReceiver receiver) {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(INTENT_DL_RECEIVE_DATA);
+        filter.addAction(INTENT_DL_FINISH_SESSION);
+        context.registerReceiver(receiver, filter);
+
+        return receiver;
+    }
+
+    /**
+     * A convenience function to emit an intent to pebble.apk to request the data logs for a particular app. If data
+     * is available, pebble.apk will advertise the data via 'INTENT_DL_RECEIVE_DATA' intents.
+     * <p/>
+     * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
+     * Activity's {@link android.app.Activity#onPause()} method.
+     *
+     * @param context The context in which to register the BroadcastReceiver.
+     * @param appUuid The app for which to request data logs.
+     * @return The registered receiver.
+     * @see Constants#INTENT_DL_RECEIVE_DATA
+     * @see Constants#INTENT_DL_REQUEST_DATA
+     */
+    public static void requestDataLogsForApp(final Context context, final UUID appUuid) {
+        final Intent requestIntent = new Intent(INTENT_DL_REQUEST_DATA);
+        requestIntent.putExtra(APP_UUID, appUuid);
+        context.sendBroadcast(requestIntent);
     }
 
     /**
@@ -493,8 +505,7 @@ public final class PebbleKit {
         /**
          * Instantiates a new pebble data receiver.
          *
-         * @param subscribedUuid
-         *         the subscribed uuid
+         * @param subscribedUuid the subscribed uuid
          */
         protected PebbleDataReceiver(final UUID subscribedUuid) {
             this.subscribedUuid = subscribedUuid;
@@ -503,13 +514,10 @@ public final class PebbleKit {
         /**
          * Perform some work on the data received from the connected watch.
          *
-         * @param context
-         *         The BroadcastReceiver's context.
-         * @param transactionId
-         *         The transaction ID of the message in which the data was received. This is required when ACK/NACKing
-         *         the received message.
-         * @param data
-         *         A dictionary of one-or-more key-value pairs received from the connected watch.
+         * @param context       The BroadcastReceiver's context.
+         * @param transactionId The transaction ID of the message in which the data was received. This is required when ACK/NACKing
+         *                      the received message.
+         * @param data          A dictionary of one-or-more key-value pairs received from the connected watch.
          */
         public abstract void receiveData(final Context context, final int transactionId,
                                          final PebbleDictionary data);
@@ -557,8 +565,7 @@ public final class PebbleKit {
         /**
          * Instantiates a new pebble ack receiver.
          *
-         * @param subscribedUuid
-         *         the subscribed uuid
+         * @param subscribedUuid the subscribed uuid
          */
         protected PebbleAckReceiver(final UUID subscribedUuid) {
             this.subscribedUuid = subscribedUuid;
@@ -567,11 +574,9 @@ public final class PebbleKit {
         /**
          * Handle the ACK received from the connected watch.
          *
-         * @param context
-         *         The BroadcastReceiver's context.
-         * @param transactionId
-         *         The transaction ID of the message for which the ACK was received. This indicates which message was
-         *         successfully received.
+         * @param context       The BroadcastReceiver's context.
+         * @param transactionId The transaction ID of the message for which the ACK was received. This indicates which message was
+         *                      successfully received.
          */
         public abstract void receiveAck(final Context context, final int transactionId);
 
@@ -600,8 +605,7 @@ public final class PebbleKit {
         /**
          * Instantiates a new pebble nack receiver.
          *
-         * @param subscribedUuid
-         *         the subscribed uuid
+         * @param subscribedUuid the subscribed uuid
          */
         protected PebbleNackReceiver(final UUID subscribedUuid) {
             this.subscribedUuid = subscribedUuid;
@@ -610,11 +614,9 @@ public final class PebbleKit {
         /**
          * Handle the NACK received from the connected watch.
          *
-         * @param context
-         *         The BroadcastReceiver's context.
-         * @param transactionId
-         *         The transaction ID of the message for which the NACK was received. This indicates which message was
-         *         not received.
+         * @param context       The BroadcastReceiver's context.
+         * @param transactionId The transaction ID of the message for which the NACK was received. This indicates which message was
+         *                      not received.
          */
         public abstract void receiveNack(final Context context, final int transactionId);
 
@@ -647,8 +649,7 @@ public final class PebbleKit {
         /**
          * Instantiates a new pebble nack receiver.
          *
-         * @param subscribedUuid
-         *         the subscribed uuid
+         * @param subscribedUuid the subscribed uuid
          */
         protected PebbleDataLogReceiver(final UUID subscribedUuid) {
             this.subscribedUuid = subscribedUuid;
@@ -657,18 +658,12 @@ public final class PebbleKit {
         /**
          * Handle an UnsignedInteger data unit that was logged the watch and broadcast by pebble.apk.
          *
-         * @param context
-         *         The BroadcastReceiver's context.
-         * @param logUuid
-         *         The UUID that uniquely identifies a data log.
-         * @param timestamp
-         *         The timestamp when a data log was first created.
-         * @param tag
-         *         The user-defined tag for the corresponding data log.
-         * @param data
-         *         The unit of data that was logged on the watch.
-         * @throws UnsupportedOperationException
-         *         Thrown if data is received and this handler is not implemented.
+         * @param context   The BroadcastReceiver's context.
+         * @param logUuid   The UUID that uniquely identifies a data log.
+         * @param timestamp The timestamp when a data log was first created.
+         * @param tag       The user-defined tag for the corresponding data log.
+         * @param data      The unit of data that was logged on the watch.
+         * @throws UnsupportedOperationException Thrown if data is received and this handler is not implemented.
          */
         public void receiveData(final Context context, UUID logUuid,
                                 final UnsignedInteger timestamp, final UnsignedInteger tag,
@@ -680,18 +675,12 @@ public final class PebbleKit {
         /**
          * Handle a byte array data unit that was logged the watch and broadcast by pebble.apk.
          *
-         * @param context
-         *         The BroadcastReceiver's context.
-         * @param logUuid
-         *         The UUID that uniquely identifies a data log.
-         * @param timestamp
-         *         The timestamp when a data log was first created.
-         * @param tag
-         *         The user-defined tag for the corresponding data log.
-         * @param data
-         *         The unit of data that was logged on the watch.
-         * @throws UnsupportedOperationException
-         *         Thrown if data is received and this handler is not implemented.
+         * @param context   The BroadcastReceiver's context.
+         * @param logUuid   The UUID that uniquely identifies a data log.
+         * @param timestamp The timestamp when a data log was first created.
+         * @param tag       The user-defined tag for the corresponding data log.
+         * @param data      The unit of data that was logged on the watch.
+         * @throws UnsupportedOperationException Thrown if data is received and this handler is not implemented.
          */
         public void receiveData(final Context context, UUID logUuid,
                                 final UnsignedInteger timestamp, final UnsignedInteger tag,
@@ -702,18 +691,12 @@ public final class PebbleKit {
         /**
          * Handle an int data unit that was logged the watch and broadcast by pebble.apk.
          *
-         * @param context
-         *         The BroadcastReceiver's context.
-         * @param logUuid
-         *         The UUID that uniquely identifies a data log.
-         * @param timestamp
-         *         The timestamp when a data log was first created.
-         * @param tag
-         *         The user-defined tag for the corresponding data log.
-         * @param data
-         *         The unit of data that was logged on the watch.
-         * @throws UnsupportedOperationException
-         *         Thrown if data is received and this handler is not implemented.
+         * @param context   The BroadcastReceiver's context.
+         * @param logUuid   The UUID that uniquely identifies a data log.
+         * @param timestamp The timestamp when a data log was first created.
+         * @param tag       The user-defined tag for the corresponding data log.
+         * @param data      The unit of data that was logged on the watch.
+         * @throws UnsupportedOperationException Thrown if data is received and this handler is not implemented.
          */
         public void receiveData(final Context context, UUID logUuid,
                                 final UnsignedInteger timestamp, final UnsignedInteger tag, final int data) {
@@ -724,14 +707,10 @@ public final class PebbleKit {
         /**
          * Called when a session has been finished on the watch and all data has been transmitted by pebble.apk
          *
-         * @param context
-         *         The BroadcastReceiver's context.
-         * @param logUuid
-         *         The UUID that uniquely identifies a data log.
-         * @param timestamp
-         *         The timestamp when a data log was first created.
-         * @param tag
-         *         The user-defined tag for the corresponding data log.
+         * @param context   The BroadcastReceiver's context.
+         * @param logUuid   The UUID that uniquely identifies a data log.
+         * @param timestamp The timestamp when a data log was first created.
+         * @param tag       The user-defined tag for the corresponding data log.
          */
         public void onFinishSession(final Context context, UUID logUuid, final UnsignedInteger timestamp,
                                     final UnsignedInteger tag) {
@@ -833,80 +812,31 @@ public final class PebbleKit {
         }
     }
 
-    /**
-     * A convenience function to assist in programatically registering a broadcast receiver for the 'DATA_AVAILABLE'
-     * intent.
-     * <p/>
-     * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
-     * Activity's {@link android.app.Activity#onPause()} method.
-     *
-     * @param context
-     *         The context in which to register the BroadcastReceiver.
-     * @param receiver
-     *         The receiver to be registered.
-     *
-     * @return The registered receiver.
-     *
-     * @see Constants#INTENT_DL_RECEIVE_DATA
-     */
-    public static BroadcastReceiver registerDataLogReceiver(final Context context,
-                                                            final PebbleDataLogReceiver receiver) {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(INTENT_DL_RECEIVE_DATA);
-        filter.addAction(INTENT_DL_FINISH_SESSION);
-        context.registerReceiver(receiver, filter);
-
-        return receiver;
-    }
-
-    /**
-     * A convenience function to emit an intent to pebble.apk to request the data logs for a particular app. If data
-     * is available, pebble.apk will advertise the data via 'INTENT_DL_RECEIVE_DATA' intents.
-     * <p/>
-     * To avoid leaking memory, activities registering BroadcastReceivers <em>must</em> unregister them in the
-     * Activity's {@link android.app.Activity#onPause()} method.
-     *
-     * @param context
-     *         The context in which to register the BroadcastReceiver.
-     * @param appUuid
-     *         The app for which to request data logs.
-     *
-     * @return The registered receiver.
-     *
-     * @see Constants#INTENT_DL_RECEIVE_DATA
-     * @see Constants#INTENT_DL_REQUEST_DATA
-     */
-    public static void requestDataLogsForApp(final Context context, final UUID appUuid) {
-        final Intent requestIntent = new Intent(INTENT_DL_REQUEST_DATA);
-        requestIntent.putExtra(APP_UUID, appUuid);
-        context.sendBroadcast(requestIntent);
-    }
-    
     public static class FirmwareVersionInfo {
         private final int major;
         private final int minor;
         private final int point;
         private final String tag;
-        
+
         FirmwareVersionInfo(int major, int minor, int point, String tag) {
             this.major = major;
             this.minor = minor;
             this.point = point;
             this.tag = tag;
         }
-        
+
         public final int getMajor() {
             return major;
         }
-        
+
         public final int getMinor() {
             return minor;
         }
-        
+
         public final int getPoint() {
             return point;
         }
-        
+
         public final String getTag() {
             return tag;
         }

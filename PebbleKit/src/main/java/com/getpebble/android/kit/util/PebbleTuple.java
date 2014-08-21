@@ -11,24 +11,19 @@ import java.util.Map;
  */
 final class PebbleTuple {
 
-    private static final Charset UTF8 = Charset.forName("UTF-8");
-
     static final Map<String, TupleType> TYPE_NAMES = new HashMap<String, TupleType>();
-
     static {
         for (TupleType t : TupleType.values()) {
             TYPE_NAMES.put(t.getName(), t);
         }
     }
-
     static final Map<Integer, Width> WIDTH_MAP = new HashMap<Integer, Width>();
-
     static {
         for (Width w : Width.values()) {
             WIDTH_MAP.put(w.value, w);
         }
     }
-
+    private static final Charset UTF8 = Charset.forName("UTF-8");
     /**
      * The integer key identifying the tuple.
      */
@@ -82,12 +77,6 @@ final class PebbleTuple {
         return new PebbleTuple(key, type, width, length, value);
     }
 
-    public static class ValueOverflowException extends RuntimeException {
-        public ValueOverflowException() {
-            super("Value exceeds tuple capacity");
-        }
-    }
-
     static enum Width {
         NONE(0),
         BYTE(1),
@@ -115,6 +104,12 @@ final class PebbleTuple {
 
         public String getName() {
             return name().toLowerCase();
+        }
+    }
+
+    public static class ValueOverflowException extends RuntimeException {
+        public ValueOverflowException() {
+            super("Value exceeds tuple capacity");
         }
     }
 }

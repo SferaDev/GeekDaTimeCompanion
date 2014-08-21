@@ -4,13 +4,9 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Environment;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
@@ -18,16 +14,12 @@ import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,9 +29,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.prefs.Preferences;
 
-import static com.sferadev.geekthetime.companion.App.*;
+import static com.sferadev.geekthetime.companion.App.getContext;
 
 public class Utils {
 
@@ -99,7 +90,7 @@ public class Utils {
     }
 
     public static void getFile(final URL url, final String fileName) {
-        Thread thread = new Thread(new Runnable(){
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -116,7 +107,7 @@ public class Utils {
                     byte[] buffer = new byte[1024];
                     int bufferLength = 0;
 
-                    while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
+                    while ((bufferLength = inputStream.read(buffer)) > 0) {
                         fileOutput.write(buffer, 0, bufferLength);
                     }
                     fileOutput.close();
@@ -137,7 +128,7 @@ public class Utils {
             BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + fileName));
             List<String> lines = new ArrayList<String>();
             String line = reader.readLine();
-            while( line != null ) {
+            while (line != null) {
                 lines.add(line);
                 line = reader.readLine();
             }
@@ -164,9 +155,9 @@ public class Utils {
 
     public static String getBatteryLevel() {
         Intent batteryIntent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        int    level   = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-        int    scale   = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
-        int    percent = (level*100)/scale;
+        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
+        int percent = (level * 100) / scale;
         return String.valueOf(percent) + "%";
     }
 }

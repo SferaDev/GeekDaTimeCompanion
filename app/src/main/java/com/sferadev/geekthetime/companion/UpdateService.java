@@ -2,7 +2,6 @@ package com.sferadev.geekthetime.companion;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
@@ -13,7 +12,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static com.sferadev.geekthetime.companion.App.getContext;
-import static com.sferadev.geekthetime.companion.Utils.*;
+import static com.sferadev.geekthetime.companion.Utils.createToast;
+import static com.sferadev.geekthetime.companion.Utils.downloadURL;
+import static com.sferadev.geekthetime.companion.Utils.getFile;
+import static com.sferadev.geekthetime.companion.Utils.updateBehaviour;
 
 public class UpdateService extends Service {
 

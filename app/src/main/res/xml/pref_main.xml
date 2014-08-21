@@ -1,42 +1,40 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/pref_header_general" />
+    <PreferenceCategory android:title="@string/pref_header_general" />
 
     <Preference
         android:key="key_open_app"
         android:title="@string/pref_title_open_app" />
 
     <ListPreference
-        android:key="key_behaviour"
-        android:title="@string/pref_title_choose_tag"
-        android:summary="@string/pref_description_choose_tag"
         android:entries="@array/pref_tags_entries"
-        android:entryValues="@array/pref_tags_values" />
+        android:entryValues="@array/pref_tags_values"
+        android:key="key_behaviour"
+        android:summary="@string/pref_description_choose_tag"
+        android:title="@string/pref_title_choose_tag" />
 
-    <PreferenceCategory
-        android:title="@string/pref_header_extras" />
+    <PreferenceCategory android:title="@string/pref_header_extras" />
 
     <EditTextPreference
         android:key="key_custom_tag"
-        android:title="@string/pref_title_custom_quote"
-        android:summary="@string/pref_description_custom_quote"
+        android:maxLines="1"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:summary="@string/pref_description_custom_quote"
+        android:title="@string/pref_title_custom_quote" />
 
     <EditTextPreference
         android:key="key_location"
-        android:title="@string/pref_title_weather_location"
-        android:summary="@string/pref_description_weather_location"
+        android:maxLines="1"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:summary="@string/pref_description_weather_location"
+        android:title="@string/pref_title_weather_location" />
 
     <EditTextPreference
         android:key="key_reddit"
-        android:title="@string/pref_title_reddit"
-        android:summary="@string/pref_description_reddit"
+        android:maxLines="1"
         android:singleLine="true"
-        android:maxLines="1" />
+        android:summary="@string/pref_description_reddit"
+        android:title="@string/pref_title_reddit" />
 
     <!--<CheckBoxPreference
         android:key="key_show_bt"
@@ -48,8 +46,7 @@
         android:title="@string/pref_title_battery_show"
         android:defaultValue="true" />-->
 
-    <PreferenceCategory
-        android:title="@string/pref_header_about" />
+    <PreferenceCategory android:title="@string/pref_header_about" />
 
     <Preference android:title="@string/pref_title_about_xda">
         <intent

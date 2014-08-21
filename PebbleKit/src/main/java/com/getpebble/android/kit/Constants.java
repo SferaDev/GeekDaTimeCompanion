@@ -4,7 +4,6 @@ import java.util.UUID;
 
 /**
  * Constant values used by PebbleKit-enabled android applications.
- *
  */
 public final class Constants {
 
@@ -271,7 +270,7 @@ public final class Constants {
     public static final int KIT_STATE_COLUMN_VERSION_MINOR = 4;
     public static final int KIT_STATE_COLUMN_VERSION_POINT = 5;
     public static final int KIT_STATE_COLUMN_VERSION_TAG = 6;
-    
+
     /**
      * Instantiates a new constants.
      */
@@ -307,8 +306,7 @@ public final class Constants {
         /**
          * Instantiates a new pebble app type.
          *
-         * @param ord
-         *         the ord
+         * @param ord the ord
          */
         private PebbleAppType(final int ord) {
             this.ord = ord;
