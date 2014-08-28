@@ -8,8 +8,6 @@ import android.preference.PreferenceManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.sferadev.geekthetime.companion.App.*;
 import static com.sferadev.geekthetime.companion.Utils.*;
@@ -22,7 +20,7 @@ public class UpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        createToast("Service Started");
+        updateTag();
         updateFile();
         r = new Runnable() {
             @Override
@@ -36,7 +34,6 @@ public class UpdateService extends Service {
     }
 
     public void onDestroy() {
-        createToast("Service Killed");
         handler.removeCallbacks(r);
     }
 

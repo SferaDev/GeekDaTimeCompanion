@@ -42,8 +42,6 @@ public class Utils {
     public final static int KEY_TAG = 7; //Custom tag
 
     public static String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
-    public static String redditURL = "http://www.reddit.com/r/" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_reddit", "android") + "/new.json?sort=new";
-    public static String weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", "Mountain View");
     public static File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
 
     public static void startAppOnPebble() {
@@ -80,22 +78,11 @@ public class Utils {
             case "CUSTOM_SENTENCE":
                 sendString(KEY_TAG, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_custom_tag", "Not found"));
                 break;
-            case "LAST_NOTIFICATION":
-                //TODO
-                break;
             case "WEATHER":
-                try {
-                    sendString(KEY_TAG, getWeather());
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                sendString(KEY_TAG, getWeather());
                 break;
             case "REDDIT_CONTENT":
-                try {
-                    sendString(KEY_TAG, getReddit());
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                sendString(KEY_TAG, getReddit());
                 break;
             case "DATE":
                 sendString(KEY_TAG, getDate());
@@ -124,6 +111,9 @@ public class Utils {
 
                     downloadLocation.mkdirs();
                     File file = new File(downloadLocation, fileName);
+                    if (file.exists()) {
+                        file.delete();
+                    }
                     FileOutputStream fileOutput = new FileOutputStream(file);
                     InputStream inputStream = urlConnection.getInputStream();
 
@@ -171,9 +161,10 @@ public class Utils {
         return df.format(c.getTime());
     }
 
-    public static String getWeather() throws MalformedURLException {
-        getFile(new URL(weatherURL), "weather.txt");
+    public synchronized static String getWeather() {
+        String weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", "");
         try {
+            getFile(new URL(weatherURL), "weather.txt");
             BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + "weather.txt"));
             JSONObject response = new JSONObject(reader.readLine().toString());
             JSONArray newTopics = response.getJSONArray("weather");
@@ -188,13 +179,14 @@ public class Utils {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "Error: Weather unavailable";
+        return null;
     }
 
-    public static String getReddit() throws MalformedURLException {
-        getFile(new URL(redditURL), "reddit.txt");
-        Random r = new Random();
+    public synchronized static String getReddit() {
+        String redditURL = "http://www.reddit.com/r/" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_reddit", "android") + "/new.json?sort=new";
         try {
+            getFile(new URL(redditURL), "reddit.txt");
+            Random r = new Random();
             BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + "reddit.txt"));
             JSONObject response = new JSONObject(reader.readLine().toString());
             JSONObject data = response.getJSONObject("data");
