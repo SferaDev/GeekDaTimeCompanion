@@ -28,8 +28,6 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_geek</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_geek</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Geek</item>
-
-
     </style>
 
     <style name="ActionBar.Solid.Geek" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
