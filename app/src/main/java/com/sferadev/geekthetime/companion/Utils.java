@@ -180,7 +180,7 @@ public class Utils {
             JSONObject data = response.getJSONObject("main");
             double fTemp = 1.8 * (Double.parseDouble(data.getString("temp")) - 273) + 32;
             double cTemp = Double.parseDouble(data.getString("temp")) - 273;
-            return newTopics.getJSONObject(0).getString("main") + " | " + fTemp + "F | " + cTemp + "C | ";
+            return newTopics.getJSONObject(0).getString("main") + " | " + Math.round(fTemp) + "ºF | " + Math.round(cTemp) + "ºC";
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -188,7 +188,7 @@ public class Utils {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "Error: Reddit unavailable";
+        return "Error: Weather unavailable";
     }
 
     public static String getReddit() throws MalformedURLException {
