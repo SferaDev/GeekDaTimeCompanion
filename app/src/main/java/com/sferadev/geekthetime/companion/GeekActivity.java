@@ -8,7 +8,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 import static com.sferadev.geekthetime.companion.App.getContext;
-import static com.sferadev.geekthetime.companion.Utils.*;
+import static com.sferadev.geekthetime.companion.Utils.isServiceRunning;
+import static com.sferadev.geekthetime.companion.Utils.startAppOnPebble;
+import static com.sferadev.geekthetime.companion.Utils.updateBehaviour;
 
 public class GeekActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 

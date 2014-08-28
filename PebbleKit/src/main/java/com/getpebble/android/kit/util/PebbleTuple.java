@@ -12,17 +12,21 @@ import java.util.Map;
 final class PebbleTuple {
 
     static final Map<String, TupleType> TYPE_NAMES = new HashMap<String, TupleType>();
+
     static {
         for (TupleType t : TupleType.values()) {
             TYPE_NAMES.put(t.getName(), t);
         }
     }
+
     static final Map<Integer, Width> WIDTH_MAP = new HashMap<Integer, Width>();
+
     static {
         for (Width w : Width.values()) {
             WIDTH_MAP.put(w.value, w);
         }
     }
+
     private static final Charset UTF8 = Charset.forName("UTF-8");
     /**
      * The integer key identifying the tuple.

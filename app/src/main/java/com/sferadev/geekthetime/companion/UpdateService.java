@@ -9,13 +9,15 @@ import android.preference.PreferenceManager;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.sferadev.geekthetime.companion.App.*;
-import static com.sferadev.geekthetime.companion.Utils.*;
+import static com.sferadev.geekthetime.companion.App.getContext;
+import static com.sferadev.geekthetime.companion.Utils.downloadURL;
+import static com.sferadev.geekthetime.companion.Utils.getFile;
+import static com.sferadev.geekthetime.companion.Utils.updateBehaviour;
 
 public class UpdateService extends Service {
 
-    final Handler handler = new Handler();
     final static int updateTime = 1000 * 60 * 10;
+    final Handler handler = new Handler();
     Runnable r;
 
     @Override
