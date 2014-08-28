@@ -42,6 +42,7 @@ public class Utils {
     static String mWeather;
     static String mIP;
     static String mGitHub;
+    static String mMeme;
     static String mReddit;
 
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
@@ -101,6 +102,9 @@ public class Utils {
                 break;
             case "GITHUB_STATUS":
                 sendString(KEY_TAG, "GitHub: " + getGitHubStatus());
+                break;
+            case "AUTO_MEME":
+                sendString(KEY_TAG, getAutoMeme());
                 break;
             case "REDDIT_CONTENT":
                 sendString(KEY_TAG, getReddit());
@@ -175,7 +179,7 @@ public class Utils {
             @Override
             public void run() {
                 try {
-                    URL mURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", ""));
+                    URL mURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", "Mountain View"));
                     Random r = new Random();
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(mURL.openStream()));
@@ -269,6 +273,35 @@ public class Utils {
         try {
             thread.join();
             return mGitHub;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
+
+    public static String getAutoMeme() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL mURL = new URL("http://api.automeme.net/text.json?lines=1");
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(mURL.openStream()));
+                    JSONArray response = new JSONArray(reader.readLine().toString());
+                    mMeme = response.getString(0);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            return mMeme;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

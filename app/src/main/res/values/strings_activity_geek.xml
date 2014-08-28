@@ -16,6 +16,7 @@
         <item>Phone Battery</item>
         <item>My IP</item>
         <item>GitHub Status</item>
+        <item>Auto Meme</item>
         <item>Reddit Content</item>
     </string-array>
     <string-array name="pref_tags_values">
@@ -27,6 +28,7 @@
         <item>PHONE_BATTERY</item>
         <item>IP</item>
         <item>GITHUB_STATUS</item>
+        <item>AUTO_MEME</item>
         <item>REDDIT_CONTENT</item>
     </string-array>
 
