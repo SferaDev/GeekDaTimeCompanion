@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,6 +38,11 @@ import java.util.UUID;
 import static com.sferadev.geekthetime.companion.App.getContext;
 
 public class Utils {
+
+    static String mWeather;
+    static String mIP;
+    static String mGitHub;
+    static String mReddit;
 
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
     public final static int KEY_TAG = 7; //Custom tag
@@ -93,6 +99,9 @@ public class Utils {
             case "IP":
                 sendString(KEY_TAG, "IP: " + getIP());
                 break;
+            case "GITHUB_STATUS":
+                sendString(KEY_TAG, "GitHub: " + getGitHubStatus());
+                break;
             case "REDDIT_CONTENT":
                 sendString(KEY_TAG, getReddit());
                 break;
@@ -114,9 +123,6 @@ public class Utils {
 
                     downloadLocation.mkdirs();
                     File file = new File(downloadLocation, fileName);
-                    if (file.exists()) {
-                        file.delete();
-                    }
                     FileOutputStream fileOutput = new FileOutputStream(file);
                     InputStream inputStream = urlConnection.getInputStream();
 
@@ -165,24 +171,37 @@ public class Utils {
     }
 
     public static String getWeather() {
-        String weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", "");
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL mURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", ""));
+                    Random r = new Random();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(mURL.openStream()));
+                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    JSONArray newTopics = response.getJSONArray("weather");
+                    JSONObject data = response.getJSONObject("main");
+                    double fTemp = 1.8 * (Double.parseDouble(data.getString("temp")) - 273) + 32;
+                    double cTemp = Double.parseDouble(data.getString("temp")) - 273;
+                    mWeather =  newTopics.getJSONObject(0).getString("main") + " | " + Math.round(fTemp) + "ºF | " + Math.round(cTemp) + "ºC";
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
         try {
-            getFile(new URL(weatherURL), "weather.txt");
-            BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + "weather.txt"));
-            JSONObject response = new JSONObject(reader.readLine().toString());
-            JSONArray newTopics = response.getJSONArray("weather");
-            JSONObject data = response.getJSONObject("main");
-            double fTemp = 1.8 * (Double.parseDouble(data.getString("temp")) - 273) + 32;
-            double cTemp = Double.parseDouble(data.getString("temp")) - 273;
-            return newTopics.getJSONObject(0).getString("main") + " | " + Math.round(fTemp) + "ºF | " + Math.round(cTemp) + "ºC";
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+            thread.join();
+            return mWeather;
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
+        return "Error";
     }
 
     public static String getCarrier() {
@@ -199,40 +218,92 @@ public class Utils {
     }
 
     public static String getIP() {
-        String ipURL = "http://jsonip.com/";
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL mURL = new URL("http://jsonip.com/");
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(mURL.openStream()));
+                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    mIP = response.getString("ip");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
         try {
-            getFile(new URL(ipURL), "ip.txt");
-            Random r = new Random();
-            BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + "ip.txt"));
-            JSONObject response = new JSONObject(reader.readLine().toString());
-            return response.getString("ip");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+            thread.join();
+            return mIP;
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "Error: IP unavailable";
+        return "Error";
+    }
+
+    public static String getGitHubStatus() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL mURL = new URL("https://status.github.com/api/last-message.json");
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(mURL.openStream()));
+                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    mGitHub = response.getString("body");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            return mGitHub;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
     }
 
     public static String getReddit() {
-        String redditURL = "http://www.reddit.com/new.json?sort=new";
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL mURL = new URL("http://www.reddit.com/new.json?sort=new");
+                    Random r = new Random();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(mURL.openStream()));
+                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    JSONObject data = response.getJSONObject("data");
+                    JSONArray newTopics = data.getJSONArray("children");
+                    mReddit = newTopics.getJSONObject(r.nextInt(newTopics.length())).getJSONObject("data").getString("title");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
         try {
-            getFile(new URL(redditURL), "reddit.txt");
-            Random r = new Random();
-            BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + "reddit.txt"));
-            JSONObject response = new JSONObject(reader.readLine().toString());
-            JSONObject data = response.getJSONObject("data");
-            JSONArray newTopics = data.getJSONArray("children");
-            return newTopics.getJSONObject(r.nextInt(newTopics.length())).getJSONObject("data").getString("title");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+            thread.join();
+            return mReddit;
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "Error: Reddit unavailable";
+        return "Error";
     }
 }
