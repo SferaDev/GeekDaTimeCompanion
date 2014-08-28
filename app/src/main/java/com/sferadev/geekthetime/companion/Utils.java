@@ -81,9 +81,6 @@ public class Utils {
             case "WEATHER":
                 sendString(KEY_TAG, getWeather());
                 break;
-            case "REDDIT_CONTENT":
-                sendString(KEY_TAG, getReddit());
-                break;
             case "DATE":
                 sendString(KEY_TAG, getDate());
                 break;
@@ -92,6 +89,12 @@ public class Utils {
                 break;
             case "PHONE_BATTERY":
                 sendString(KEY_TAG, "Phone has " + getBatteryLevel());
+                break;
+            case "IP":
+                sendString(KEY_TAG, "IP: " + getIP());
+                break;
+            case "REDDIT_CONTENT":
+                sendString(KEY_TAG, getReddit());
                 break;
             default:
                 sendString(KEY_TAG, "Coming Soon!");
@@ -161,7 +164,7 @@ public class Utils {
         return df.format(c.getTime());
     }
 
-    public synchronized static String getWeather() {
+    public static String getWeather() {
         String weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", "");
         try {
             getFile(new URL(weatherURL), "weather.txt");
@@ -182,7 +185,38 @@ public class Utils {
         return null;
     }
 
-    public synchronized static String getReddit() {
+    public static String getCarrier() {
+        TelephonyManager manager = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        return manager.getNetworkOperatorName();
+    }
+
+    public static String getBatteryLevel() {
+        Intent batteryIntent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
+        int percent = (level * 100) / scale;
+        return String.valueOf(percent) + "%";
+    }
+
+    public static String getIP() {
+        String ipURL = "http://jsonip.com/";
+        try {
+            getFile(new URL(ipURL), "ip.txt");
+            Random r = new Random();
+            BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + "ip.txt"));
+            JSONObject response = new JSONObject(reader.readLine().toString());
+            return response.getString("ip");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "Error: IP unavailable";
+    }
+
+    public static String getReddit() {
         String redditURL = "http://www.reddit.com/new.json?sort=new";
         try {
             getFile(new URL(redditURL), "reddit.txt");
@@ -200,18 +234,5 @@ public class Utils {
             e.printStackTrace();
         }
         return "Error: Reddit unavailable";
-    }
-
-    public static String getCarrier() {
-        TelephonyManager manager = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-        return manager.getNetworkOperatorName();
-    }
-
-    public static String getBatteryLevel() {
-        Intent batteryIntent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
-        int percent = (level * 100) / scale;
-        return String.valueOf(percent) + "%";
     }
 }

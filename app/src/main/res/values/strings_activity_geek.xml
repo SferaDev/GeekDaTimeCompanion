@@ -12,18 +12,20 @@
         <item>Custom Sentence</item>
         <item>Weather</item>
         <item>Date</item>
-        <item>Reddit Content</item>
         <item>Carrier Name</item>
         <item>Phone Battery</item>
+        <item>My IP</item>
+        <item>Reddit Content</item>
     </string-array>
     <string-array name="pref_tags_values">
         <item>RANDOM_QUOTE</item>
         <item>CUSTOM_SENTENCE</item>
         <item>WEATHER</item>
         <item>DATE</item>
-        <item>REDDIT_CONTENT</item>
         <item>CARRIER</item>
         <item>PHONE_BATTERY</item>
+        <item>IP</item>
+        <item>REDDIT_CONTENT</item>
     </string-array>
 
     <string name="pref_title_custom_quote">Tag: Custom Sentence</string>
