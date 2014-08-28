@@ -19,21 +19,18 @@
         android:key="key_custom_tag"
         android:maxLines="1"
         android:singleLine="true"
-        android:summary="@string/pref_description_custom_quote"
         android:title="@string/pref_title_custom_quote" />
 
     <EditTextPreference
         android:key="key_location"
         android:maxLines="1"
         android:singleLine="true"
-        android:summary="@string/pref_description_weather_location"
         android:title="@string/pref_title_weather_location" />
 
     <EditTextPreference
         android:key="key_reddit"
         android:maxLines="1"
         android:singleLine="true"
-        android:summary="@string/pref_description_reddit"
         android:title="@string/pref_title_reddit" />
 
     <!--<CheckBoxPreference

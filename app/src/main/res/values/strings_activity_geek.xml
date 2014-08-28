@@ -14,7 +14,7 @@
         <item>Weather WIP</item>
         <item>Date</item>
         <item>Random News WIP</item>
-        <item>Reddit Content WIP</item>
+        <item>Reddit Content</item>
         <item>Carrier Name</item>
         <item>Phone Battery</item>
     </string-array>
@@ -30,31 +30,13 @@
         <item>PHONE_BATTERY</item>
     </string-array>
 
-    <string name="pref_title_custom_quote">Custom Sentence</string>
-    <string name="pref_title_weather_location">Weather Location</string>
-    <string name="pref_title_reddit">Reddit Integration</string>
-
-    <string name="pref_description_custom_quote">Enter the desired tag</string>
-    <string name="pref_description_weather_location">Enter your city name</string>
-    <string name="pref_description_reddit">Enter your favourite subreddit</string>
+    <string name="pref_title_custom_quote">Tag: Custom Sentence</string>
+    <string name="pref_title_weather_location">Weather: Desired Location</string>
+    <string name="pref_title_reddit">Reddit: Search by Subreddit</string>
 
     <string name="pref_title_enable_theme">Enable Theme Options</string>
     <string name="pref_title_bt_show">Show Bluetooth Status</string>
     <string name="pref_title_battery_show">Show Battery Status</string>
 
     <string name="pref_title_about_xda">Geek The Time on XDA</string>
-
-
-    <!-- TODO -->
-    <string name="pref_title_clock_font">Clock Font</string>
-    <string-array name="pref_clock_font_entries">
-        <item>Bitham Light</item>
-        <item>Bitham Bold</item>
-        <item>Roboto</item>
-    </string-array>
-    <string-array name="pref_clock_font_values">
-        <item>FONT_KEY_BITHAM_42_LIGHT</item>
-        <item>FONT_KEY_BITHAM_42_BOLD</item>
-        <item>FONT_KEY_ROBOTO_49_BOLD_SUBSET</item>
-    </string-array>
 </resources>
