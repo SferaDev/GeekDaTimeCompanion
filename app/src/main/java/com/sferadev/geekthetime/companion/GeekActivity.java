@@ -5,19 +5,19 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
-import static com.sferadev.geekthetime.companion.Utils.isServiceRunning;
-import static com.sferadev.geekthetime.companion.Utils.startAppOnPebble;
-import static com.sferadev.geekthetime.companion.Utils.updateBehaviour;
+import static com.sferadev.geekthetime.companion.Utils.*;
 
 public class GeekActivity extends PreferenceActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (!isServiceRunning(UpdateService.class)) {
             Intent i = new Intent(this, UpdateService.class);
             this.startService(i);
         }
+
         addPreferencesFromResource(R.xml.pref_main);
         getPreferenceScreen().findPreference("key_open_app").setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {

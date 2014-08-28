@@ -74,6 +74,9 @@ public class Utils {
             case "CUSTOM_SENTENCE":
                 sendString(KEY_TAG, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_custom_tag", "Not found"));
                 break;
+            case "LAST_NOTIFICATION":
+                //TODO
+                break;
             case "DATE":
                 sendString(KEY_TAG, getDate());
                 break;

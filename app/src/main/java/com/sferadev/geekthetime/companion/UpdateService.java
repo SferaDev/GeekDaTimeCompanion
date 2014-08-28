@@ -2,56 +2,58 @@ package com.sferadev.geekthetime.companion;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import static com.sferadev.geekthetime.companion.App.getContext;
-import static com.sferadev.geekthetime.companion.Utils.createToast;
-import static com.sferadev.geekthetime.companion.Utils.downloadURL;
-import static com.sferadev.geekthetime.companion.Utils.getFile;
-import static com.sferadev.geekthetime.companion.Utils.updateBehaviour;
+import static com.sferadev.geekthetime.companion.App.*;
+import static com.sferadev.geekthetime.companion.Utils.*;
 
 public class UpdateService extends Service {
 
-    ScheduledExecutorService scheduler =
-            Executors.newSingleThreadScheduledExecutor();
+    final Handler handler = new Handler();
+    final static int updateTime = 1000 * 60 * 10;
+    Runnable r;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        doService();
-        scheduler.scheduleAtFixedRate
-                (new Runnable() {
-                    public void run() {
-                        doService();
-                    }
-                }, 0, 10, TimeUnit.MINUTES);
+        createToast("Service Started");
+        updateFile();
+        r = new Runnable() {
+            @Override
+            public void run() {
+                updateTag();
+                handler.postDelayed(this, updateTime);
+            }
+        };
+        handler.postDelayed(r, updateTime);
         return Service.START_STICKY;
     }
 
     public void onDestroy() {
         createToast("Service Killed");
-        scheduler.shutdown();
+        handler.removeCallbacks(r);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO
         return null;
     }
 
-    private void doService() {
-        createToast("Service Started");
+    private void updateFile() {
         try {
             getFile(new URL(downloadURL), "quotes.txt");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        updateBehaviour(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_behaviour", ""));
+    }
+
+    private void updateTag() {
+        updateBehaviour(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_behaviour", "May The Force Be With You All"));
     }
 }
