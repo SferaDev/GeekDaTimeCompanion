@@ -183,7 +183,7 @@ public class Utils {
     }
 
     public synchronized static String getReddit() {
-        String redditURL = "http://www.reddit.com/r/" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_reddit", "android") + "/new.json?sort=new";
+        String redditURL = "http://www.reddit.com/new.json?sort=new";
         try {
             getFile(new URL(redditURL), "reddit.txt");
             Random r = new Random();

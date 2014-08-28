@@ -28,7 +28,6 @@
 
     <string name="pref_title_custom_quote">Tag: Custom Sentence</string>
     <string name="pref_title_weather_location">Weather: Desired Location</string>
-    <string name="pref_title_reddit">Reddit: Search by Subreddit</string>
 
     <string name="pref_title_enable_theme">Enable Theme Options</string>
     <string name="pref_title_bt_show">Show Bluetooth Status</string>

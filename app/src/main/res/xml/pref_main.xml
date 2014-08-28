@@ -27,12 +27,6 @@
         android:singleLine="true"
         android:title="@string/pref_title_weather_location" />
 
-    <EditTextPreference
-        android:key="key_reddit"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:title="@string/pref_title_reddit" />
-
     <!--<CheckBoxPreference
         android:key="key_show_bt"
         android:title="@string/pref_title_bt_show"
