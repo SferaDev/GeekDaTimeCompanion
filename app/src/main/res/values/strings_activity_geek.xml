@@ -10,10 +10,8 @@
     <string-array name="pref_tags_entries">
         <item>Random Quote</item>
         <item>Custom Sentence</item>
-        <item>Last Notification WIP</item>
-        <item>Weather WIP</item>
+        <item>Weather</item>
         <item>Date</item>
-        <item>Random News WIP</item>
         <item>Reddit Content</item>
         <item>Carrier Name</item>
         <item>Phone Battery</item>
@@ -21,10 +19,8 @@
     <string-array name="pref_tags_values">
         <item>RANDOM_QUOTE</item>
         <item>CUSTOM_SENTENCE</item>
-        <item>LAST_NOTIFICATION</item>
         <item>WEATHER</item>
         <item>DATE</item>
-        <item>RANDOM_NEWS</item>
         <item>REDDIT_CONTENT</item>
         <item>CARRIER</item>
         <item>PHONE_BATTERY</item>
