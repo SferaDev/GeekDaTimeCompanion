@@ -1,3 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Geek The Time</string>
+    <string name="start_connecting">Connecting\nwith your\nPebble</string>
+    <string name="start_error">Couldn\'t\nfind your\nPebble</string>
+    <string name="start_success">Connected!</string>
+    <string name="start_ignore">Ignore</string>
 </resources>

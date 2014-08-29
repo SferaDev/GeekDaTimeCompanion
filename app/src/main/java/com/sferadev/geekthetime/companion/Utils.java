@@ -44,6 +44,7 @@ public class Utils {
 
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
     public final static int KEY_TAG = 7; //Custom tag
+    public static boolean mStartShown = false;
     public static String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
     public static File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
     static String mWeather;
