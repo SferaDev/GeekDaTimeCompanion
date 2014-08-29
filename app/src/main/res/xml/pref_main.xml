@@ -35,4 +35,10 @@
             android:data="http://goo.gl/gC3hgK" />
     </Preference>
 
+    <Preference android:title="@string/pref_title_about_quotes">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/SferaDev/GeekDaTimeQuotes/blob/master/quotes" />
+    </Preference>
+
 </PreferenceScreen>

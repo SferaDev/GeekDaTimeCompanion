@@ -48,4 +48,5 @@
     <string name="pref_title_battery_show">Show Battery Status</string>
 
     <string name="pref_title_about_xda">Geek The Time on XDA</string>
+    <string name="pref_title_about_quotes">Propose new Quotes</string>
 </resources>
