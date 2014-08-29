@@ -49,6 +49,8 @@ public class GeekActivity extends PreferenceActivity implements SharedPreference
     private void updateSummary() {
         findPreference("key_custom_tag").setSummary("Custom Tag: " + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_custom_tag", "May The Force Be With You"));
         findPreference("key_location").setSummary("Weather in: " + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", "Unknown"));
+        findPreference("key_refresh").setSummary("Refresh Rate: " + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_refresh", "10"));
+
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {

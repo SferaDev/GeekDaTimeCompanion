@@ -27,15 +27,11 @@
         android:singleLine="true"
         android:title="@string/pref_title_weather_location" />
 
-    <!--<CheckBoxPreference
-        android:key="key_show_bt"
-        android:title="@string/pref_title_bt_show"
-        android:defaultValue="true" />
-
-    <CheckBoxPreference
-        android:key="key_show_battery"
-        android:title="@string/pref_title_battery_show"
-        android:defaultValue="true" />-->
+    <ListPreference
+        android:key="key_refresh"
+        android:title="@string/pref_title_refresh"
+        android:entries="@array/pref_refresh_entries"
+        android:entryValues="@array/pref_refresh_values" />
 
     <PreferenceCategory android:title="@string/pref_header_about" />
 

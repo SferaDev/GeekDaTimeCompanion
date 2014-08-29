@@ -16,7 +16,7 @@ import static com.sferadev.geekthetime.companion.Utils.updateBehaviour;
 
 public class UpdateService extends Service {
 
-    final static int updateTime = 1000 * 60 * 10;
+    final static int updateTime = 1000 * 60 * Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_refresh", "10"));
     final Handler handler = new Handler();
     Runnable r;
 
