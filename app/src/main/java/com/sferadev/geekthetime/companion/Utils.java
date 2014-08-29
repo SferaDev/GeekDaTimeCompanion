@@ -13,6 +13,9 @@ import android.widget.Toast;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
+import org.horrabin.horrorss.RssFeed;
+import org.horrabin.horrorss.RssItemBean;
+import org.horrabin.horrorss.RssParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +46,7 @@ public class Utils {
     static String mIP;
     static String mGitHub;
     static String mMeme;
+    static String mXDA;
     static String mReddit;
 
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
@@ -107,6 +111,9 @@ public class Utils {
                 break;
             case "AUTO_MEME":
                 sendString(KEY_TAG, getAutoMeme());
+                break;
+            case "XDA":
+                sendString(KEY_TAG, "XDA: " + getXDAFeed());
                 break;
             case "REDDIT_CONTENT":
                 sendString(KEY_TAG, getReddit());
@@ -304,6 +311,32 @@ public class Utils {
         try {
             thread.join();
             return mMeme;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
+
+    public static String getXDAFeed() {
+        final RssParser rss = new RssParser();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RssFeed feed = rss.load("http://www.xda-developers.com/feed/");
+                    Random r = new Random();
+                    List<RssItemBean> items = feed.getItems();
+                    RssItemBean item = items.get(r.nextInt(items.size()));
+                    mXDA = item.getTitle();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            return mXDA;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
