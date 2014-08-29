@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -43,7 +45,7 @@ import static com.sferadev.geekthetime.companion.App.getContext;
 public class Utils {
 
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
-    public final static int KEY_TAG = 7; //Custom tag
+    public final static int KEY_TAG = 7;
     public static boolean mStartShown = false;
     public static String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
     public static File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
@@ -62,11 +64,15 @@ public class Utils {
     }
 
     public static void sendString(int key, String string) {
-        startAppOnPebble();
-        createToast("Sending Weird Stuff via AppMessage");
-        PebbleDictionary data = new PebbleDictionary();
-        data.addString(key, string);
-        PebbleKit.sendDataToPebble(getContext(), PEBBLE_APP_UUID, data);
+        try {
+            startAppOnPebble();
+            createToast("DEBUG: Item Sent");
+            PebbleDictionary data = new PebbleDictionary();
+            data.addString(key, string);
+            PebbleKit.sendDataToPebble(getContext(), PEBBLE_APP_UUID, data);
+        } catch (Exception e) {
+            createToast("Error: Pebble not found");
+        }
     }
 
     public static void createToast(String string) {
@@ -86,7 +92,6 @@ public class Utils {
 
     public static void updateBehaviour(String string) {
         switch (string) {
-            //TODO
             case "RANDOM_QUOTE":
                 sendString(KEY_TAG, getRandomLine("quotes.txt"));
                 break;
@@ -94,7 +99,11 @@ public class Utils {
                 sendString(KEY_TAG, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_custom_tag", "May The Force Be With Ya"));
                 break;
             case "WEATHER":
-                sendString(KEY_TAG, getWeather());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, getWeather());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "DATE":
                 sendString(KEY_TAG, getDate());
@@ -106,32 +115,64 @@ public class Utils {
                 sendString(KEY_TAG, "Phone has " + getBatteryLevel());
                 break;
             case "IP":
-                sendString(KEY_TAG, "IP: " + getIP());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, "IP: " + getIP());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "GITHUB_STATUS":
-                sendString(KEY_TAG, "GitHub: " + getGitHubStatus());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, "GitHub: " + getGitHubStatus());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "AUTO_MEME":
-                sendString(KEY_TAG, getAutoMeme());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, getAutoMeme());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "XDA":
-                sendString(KEY_TAG, "XDA: " + getXDAFeed());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, "XDA: " + getXDAFeed());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "AP":
-                sendString(KEY_TAG, "AP: " + getAndroidPoliceFeed());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, "AP: " + getAndroidPoliceFeed());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "PHANDROID":
-                sendString(KEY_TAG, "Phandroid: " + getPhandroidFeed());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, "Phandroid: " + getPhandroidFeed());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "REDDIT_CONTENT":
-                sendString(KEY_TAG, getReddit());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, getReddit());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             case "BTC":
-                sendString(KEY_TAG, getBTC());
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, getBTC());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
                 break;
             default:
-                sendString(KEY_TAG, "Coming Soon!");
-                //throw new IllegalArgumentException("Invalid option" + object.toString());
+                createToast("DEBUG: Error on " + string);
+                throw new IllegalArgumentException("Invalid option" + string);
         }
     }
 
@@ -465,5 +506,12 @@ public class Utils {
             e.printStackTrace();
         }
         return "Error";
+    }
+
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
