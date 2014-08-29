@@ -19,6 +19,7 @@
         <item>Auto Meme</item>
         <item>XDA Portal</item>
         <item>Reddit Content</item>
+        <item>Bitcoin Avg. Value</item>
     </string-array>
     <string-array name="pref_tags_values">
         <item>RANDOM_QUOTE</item>
@@ -32,6 +33,7 @@
         <item>AUTO_MEME</item>
         <item>XDA</item>
         <item>REDDIT_CONTENT</item>
+        <item>BTC</item>
     </string-array>
 
     <string name="pref_title_custom_quote">Tag: Custom Sentence</string>

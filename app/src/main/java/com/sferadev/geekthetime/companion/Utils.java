@@ -48,6 +48,7 @@ public class Utils {
     static String mMeme;
     static String mXDA;
     static String mReddit;
+    static String mBTC;
 
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
     public final static int KEY_TAG = 7; //Custom tag
@@ -117,6 +118,9 @@ public class Utils {
                 break;
             case "REDDIT_CONTENT":
                 sendString(KEY_TAG, getReddit());
+                break;
+            case "BTC":
+                sendString(KEY_TAG, getBTC());
                 break;
             default:
                 sendString(KEY_TAG, "Coming Soon!");
@@ -369,6 +373,35 @@ public class Utils {
         try {
             thread.join();
             return mReddit;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
+
+    public static String getBTC() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL mURL = new URL("http://api.bitcoincharts.com/v1/weighted_prices.json");
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(mURL.openStream()));
+                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    mBTC = "1 BTC | " + response.getJSONObject("USD").getString("24h") + "USD | " + response.getJSONObject("EUR").getString("24h") + "EUR | " + response.getJSONObject("GBP").getString("24h") + "GBP";
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            return mBTC;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

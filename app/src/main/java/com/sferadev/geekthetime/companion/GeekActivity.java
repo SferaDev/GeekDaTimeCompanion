@@ -53,7 +53,6 @@ public class GeekActivity extends PreferenceActivity implements SharedPreference
 
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         updateSummary();
-        updateBehaviour(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_behaviour", ""));
     }
 
 }
