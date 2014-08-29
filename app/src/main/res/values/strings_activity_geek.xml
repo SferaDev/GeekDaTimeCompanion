@@ -19,6 +19,7 @@
         <item>Auto Meme</item>
         <item>XDA Portal</item>
         <item>Android Police</item>
+        <item>Phandroid</item>
         <item>Reddit Content</item>
         <item>Bitcoin Avg. Value (24h)</item>
     </string-array>
@@ -34,6 +35,7 @@
         <item>AUTO_MEME</item>
         <item>XDA</item>
         <item>AP</item>
+        <item>PHANDROID</item>
         <item>REDDIT_CONTENT</item>
         <item>BTC</item>
     </string-array>

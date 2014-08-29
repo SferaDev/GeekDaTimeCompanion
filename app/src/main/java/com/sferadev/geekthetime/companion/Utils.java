@@ -52,6 +52,7 @@ public class Utils {
     static String mMeme;
     static String mXDA;
     static String mAndroidPolice;
+    static String mPhandroid;
     static String mReddit;
     static String mBTC;
 
@@ -117,6 +118,9 @@ public class Utils {
                 break;
             case "AP":
                 sendString(KEY_TAG, "AP: " + getAndroidPoliceFeed());
+                break;
+            case "PHANDROID":
+                sendString(KEY_TAG, "Phandroid: " + getPhandroidFeed());
                 break;
             case "REDDIT_CONTENT":
                 sendString(KEY_TAG, getReddit());
@@ -369,6 +373,32 @@ public class Utils {
         try {
             thread.join();
             return mAndroidPolice;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
+
+    public static String getPhandroidFeed() {
+        final RssParser rss = new RssParser();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RssFeed feed = rss.load("http://phandroid.com/feed/");
+                    Random r = new Random();
+                    List<RssItemBean> items = feed.getItems();
+                    RssItemBean item = items.get(r.nextInt(items.size()));
+                    mPhandroid = item.getTitle();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            return mPhandroid;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
