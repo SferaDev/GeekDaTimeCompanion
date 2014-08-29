@@ -51,6 +51,7 @@ public class Utils {
     static String mGitHub;
     static String mMeme;
     static String mXDA;
+    static String mAndroidPolice;
     static String mReddit;
     static String mBTC;
 
@@ -113,6 +114,9 @@ public class Utils {
                 break;
             case "XDA":
                 sendString(KEY_TAG, "XDA: " + getXDAFeed());
+                break;
+            case "AP":
+                sendString(KEY_TAG, "AP: " + getAndroidPoliceFeed());
                 break;
             case "REDDIT_CONTENT":
                 sendString(KEY_TAG, getReddit());
@@ -339,6 +343,32 @@ public class Utils {
         try {
             thread.join();
             return mXDA;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
+
+    public static String getAndroidPoliceFeed() {
+        final RssParser rss = new RssParser();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RssFeed feed = rss.load("http://feeds.feedburner.com/AndroidPolice?format=xml");
+                    Random r = new Random();
+                    List<RssItemBean> items = feed.getItems();
+                    RssItemBean item = items.get(r.nextInt(items.size()));
+                    mAndroidPolice = item.getTitle();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            return mAndroidPolice;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
