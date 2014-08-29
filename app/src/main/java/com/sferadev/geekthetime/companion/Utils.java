@@ -42,6 +42,10 @@ import static com.sferadev.geekthetime.companion.App.getContext;
 
 public class Utils {
 
+    public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
+    public final static int KEY_TAG = 7; //Custom tag
+    public static String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
+    public static File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
     static String mWeather;
     static String mIP;
     static String mGitHub;
@@ -49,12 +53,6 @@ public class Utils {
     static String mXDA;
     static String mReddit;
     static String mBTC;
-
-    public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
-    public final static int KEY_TAG = 7; //Custom tag
-
-    public static String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
-    public static File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
 
     public static void startAppOnPebble() {
         PebbleKit.startAppOnPebble(getContext(), Utils.PEBBLE_APP_UUID);
@@ -201,7 +199,7 @@ public class Utils {
                     JSONObject data = response.getJSONObject("main");
                     double fTemp = 1.8 * (Double.parseDouble(data.getString("temp")) - 273) + 32;
                     double cTemp = Double.parseDouble(data.getString("temp")) - 273;
-                    mWeather =  newTopics.getJSONObject(0).getString("main") + " | " + Math.round(fTemp) + "ºF | " + Math.round(cTemp) + "ºC";
+                    mWeather = newTopics.getJSONObject(0).getString("main") + " | " + Math.round(fTemp) + "ºF | " + Math.round(cTemp) + "ºC";
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

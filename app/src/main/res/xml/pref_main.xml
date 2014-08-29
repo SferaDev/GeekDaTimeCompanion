@@ -28,10 +28,10 @@
         android:title="@string/pref_title_weather_location" />
 
     <ListPreference
-        android:key="key_refresh"
-        android:title="@string/pref_title_refresh"
         android:entries="@array/pref_refresh_entries"
-        android:entryValues="@array/pref_refresh_values" />
+        android:entryValues="@array/pref_refresh_values"
+        android:key="key_refresh"
+        android:title="@string/pref_title_refresh" />
 
     <PreferenceCategory android:title="@string/pref_header_about" />
 
