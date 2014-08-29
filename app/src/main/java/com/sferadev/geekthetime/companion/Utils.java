@@ -56,6 +56,8 @@ public class Utils {
     }
 
     public static void sendString(int key, String string) {
+        startAppOnPebble();
+        createToast("Sending Weird Stuff via AppMessage");
         PebbleDictionary data = new PebbleDictionary();
         data.addString(key, string);
         PebbleKit.sendDataToPebble(getContext(), PEBBLE_APP_UUID, data);
@@ -83,7 +85,7 @@ public class Utils {
                 sendString(KEY_TAG, getRandomLine("quotes.txt"));
                 break;
             case "CUSTOM_SENTENCE":
-                sendString(KEY_TAG, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_custom_tag", "Not found"));
+                sendString(KEY_TAG, PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_custom_tag", "May The Force Be With Ya"));
                 break;
             case "WEATHER":
                 sendString(KEY_TAG, getWeather());
