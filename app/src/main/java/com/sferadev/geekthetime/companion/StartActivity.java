@@ -98,34 +98,33 @@ public class StartActivity extends Activity {
     }
 
     private void connectToPebble() {
-        Handler mQuitHandler = new Handler();
-        if (PebbleKit.isWatchConnected(getApplicationContext())) {
-            Runnable mShowTextRunnable = new Runnable() {
-                @Override
-                public void run() {
+        final Handler mQuitHandler = new Handler();
+        Runnable mShowTextRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (PebbleKit.isWatchConnected(getApplicationContext())) {
                     mText.setText(getResources().getText(R.string.start_success));
                     mProgress.setVisibility(View.GONE);
+                    Runnable mQuitRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            cancelSearch();
+                        }
+                    };
+                    mQuitHandler.postDelayed(mQuitRunnable, 3500);
+                } else {
+                    Runnable mShowErrorRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            mText.setText(getResources().getText(R.string.start_error));
+                            mProgress.setVisibility(View.GONE);
+                        }
+                    };
+                    mQuitHandler.postDelayed(mShowErrorRunnable, 3000);
                 }
-            };
-            Runnable mQuitRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    cancelSearch();
-                }
-            };
-            mQuitHandler.postDelayed(mShowTextRunnable, 2500);
-            mQuitHandler.postDelayed(mQuitRunnable, 3500);
-        } else {
-            Runnable mShowTextRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    mText.setText(getResources().getText(R.string.start_error));
-                    mProgress.setVisibility(View.GONE);
-                }
-            };
-            mQuitHandler.postDelayed(mShowTextRunnable, 3000);
-
-        }
+            }
+        };
+        mQuitHandler.postDelayed(mShowTextRunnable, 2500);
     }
 
     private void cancelSearch() {
