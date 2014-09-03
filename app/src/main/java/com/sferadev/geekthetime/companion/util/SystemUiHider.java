@@ -8,19 +8,17 @@ public abstract class SystemUiHider {
     public static final int FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES = 0x1;
     public static final int FLAG_FULLSCREEN = 0x2;
     public static final int FLAG_HIDE_NAVIGATION = FLAG_FULLSCREEN | 0x4;
-    private static OnVisibilityChangeListener sDummyListener = new OnVisibilityChangeListener() {
+    private static final OnVisibilityChangeListener sDummyListener = new OnVisibilityChangeListener() {
         @Override
         public void onVisibilityChange(boolean visible) {
         }
     };
     protected OnVisibilityChangeListener mOnVisibilityChangeListener = sDummyListener;
-    protected Activity mActivity;
-    protected View mAnchorView;
-    protected int mFlags;
+    protected final Activity mActivity;
+    protected final int mFlags;
 
     protected SystemUiHider(Activity activity, View anchorView, int flags) {
         mActivity = activity;
-        mAnchorView = anchorView;
         mFlags = flags;
     }
 

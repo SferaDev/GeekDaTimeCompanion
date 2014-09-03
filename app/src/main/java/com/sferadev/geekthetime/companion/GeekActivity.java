@@ -18,7 +18,7 @@ public class GeekActivity extends PreferenceActivity implements SharedPreference
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!isServiceRunning(UpdateService.class)) {
+        if (isServiceRunning(UpdateService.class)) {
             Intent i = new Intent(this, UpdateService.class);
             this.startService(i);
         }

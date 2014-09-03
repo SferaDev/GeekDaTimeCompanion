@@ -24,14 +24,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,8 +45,8 @@ public class Utils {
     public final static UUID PEBBLE_APP_UUID = UUID.fromString("1c977f4c-d7b2-4632-987a-1e1e01834759");
     public final static int KEY_TAG = 7;
     public static boolean mStartShown = false;
-    public static String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
-    public static File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
+    public static final String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
+    public static final File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
     static String mWeather;
     static String mIP;
     static String mGitHub;
@@ -84,10 +82,10 @@ public class Utils {
         ActivityManager manager = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public static void updateBehaviour(String string) {
@@ -192,14 +190,12 @@ public class Utils {
                     InputStream inputStream = urlConnection.getInputStream();
 
                     byte[] buffer = new byte[1024];
-                    int bufferLength = 0;
+                    int bufferLength;
 
                     while ((bufferLength = inputStream.read(buffer)) > 0) {
                         fileOutput.write(buffer, 0, bufferLength);
                     }
                     fileOutput.close();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -211,9 +207,8 @@ public class Utils {
     public static String getRandomLine(String fileName) {
         String theLine = "None";
         try {
-            // Read in the file into a list of strings
             BufferedReader reader = new BufferedReader(new FileReader(downloadLocation + "/" + fileName));
-            List<String> lines = new ArrayList<String>();
+            List<String> lines = new ArrayList<>();
             String line = reader.readLine();
             while (line != null) {
                 lines.add(line);
@@ -221,8 +216,6 @@ public class Utils {
             }
             Random r = new Random();
             return lines.get(r.nextInt(lines.size()));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -241,7 +234,6 @@ public class Utils {
             public void run() {
                 try {
                     URL mURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + PreferenceManager.getDefaultSharedPreferences(getContext()).getString("key_location", "Mountain View"));
-                    Random r = new Random();
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(mURL.openStream()));
                     JSONObject response = new JSONObject(reader.readLine().toString());
@@ -250,11 +242,7 @@ public class Utils {
                     double fTemp = 1.8 * (Double.parseDouble(data.getString("temp")) - 273) + 32;
                     double cTemp = Double.parseDouble(data.getString("temp")) - 273;
                     mWeather = newTopics.getJSONObject(0).getString("main") + " | " + Math.round(fTemp) + "ºF | " + Math.round(cTemp) + "ºC";
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -276,7 +264,7 @@ public class Utils {
 
     public static String getBatteryLevel() {
         Intent batteryIntent = getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        int level = batteryIntent != null ? batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0) : 0;
         int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
         int percent = (level * 100) / scale;
         return String.valueOf(percent) + "%";
@@ -290,13 +278,9 @@ public class Utils {
                     URL mURL = new URL("http://jsonip.com/");
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(mURL.openStream()));
-                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    JSONObject response = new JSONObject(reader.readLine());
                     mIP = response.getString("ip");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -319,13 +303,9 @@ public class Utils {
                     URL mURL = new URL("https://status.github.com/api/last-message.json");
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(mURL.openStream()));
-                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    JSONObject response = new JSONObject(reader.readLine());
                     mGitHub = response.getString("body");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -348,13 +328,9 @@ public class Utils {
                     URL mURL = new URL("http://api.automeme.net/text.json?lines=1");
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(mURL.openStream()));
-                    JSONArray response = new JSONArray(reader.readLine().toString());
+                    JSONArray response = new JSONArray(reader.readLine());
                     mMeme = response.getString(0);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -456,15 +432,11 @@ public class Utils {
                     Random r = new Random();
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(mURL.openStream()));
-                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    JSONObject response = new JSONObject(reader.readLine());
                     JSONObject data = response.getJSONObject("data");
                     JSONArray newTopics = data.getJSONArray("children");
                     mReddit = newTopics.getJSONObject(r.nextInt(newTopics.length())).getJSONObject("data").getString("title");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -487,10 +459,8 @@ public class Utils {
                     URL mURL = new URL("http://api.bitcoincharts.com/v1/weighted_prices.json");
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(mURL.openStream()));
-                    JSONObject response = new JSONObject(reader.readLine().toString());
+                    JSONObject response = new JSONObject(reader.readLine());
                     mBTC = "1 BTC | " + response.getJSONObject("USD").getString("24h") + "USD | " + response.getJSONObject("EUR").getString("24h") + "EUR | " + response.getJSONObject("GBP").getString("24h") + "GBP";
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

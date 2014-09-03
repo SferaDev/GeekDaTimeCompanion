@@ -18,21 +18,20 @@ import static com.sferadev.geekthetime.companion.Utils.mStartShown;
 
 public class StartActivity extends Activity {
 
-    private static final boolean AUTO_HIDE = true;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final boolean TOGGLE_ON_CLICK = true;
     private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
     public TextView mText;
     public ProgressBar mProgress;
-    View.OnTouchListener mTouchIgnore = new View.OnTouchListener() {
+    final View.OnTouchListener mTouchIgnore = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             cancelSearch();
             return true;
         }
     };
-    Handler mHideHandler = new Handler();
-    Runnable mHideRunnable = new Runnable() {
+    final Handler mHideHandler = new Handler();
+    final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
             mSystemUiHider.hide();
@@ -50,7 +49,7 @@ public class StartActivity extends Activity {
         mText = (TextView) findViewById(R.id.main_text);
         mProgress = (ProgressBar) findViewById(R.id.progress);
 
-        if (!isServiceRunning(UpdateService.class)) {
+        if (isServiceRunning(UpdateService.class)) {
             Intent i = new Intent(this, UpdateService.class);
             this.startService(i);
         }
@@ -66,7 +65,7 @@ public class StartActivity extends Activity {
 
                     @Override
                     public void onVisibilityChange(boolean visible) {
-                        if (visible && AUTO_HIDE) {
+                        if (visible) {
                             delayedHide(AUTO_HIDE_DELAY_MILLIS);
                         }
                     }
