@@ -47,6 +47,8 @@
     <string name="pref_title_bt_show">Show Bluetooth Status</string>
     <string name="pref_title_battery_show">Show Battery Status</string>
 
-    <string name="pref_title_about_xda">Geek The Time on XDA</string>
     <string name="pref_title_about_quotes">Propose new Quotes</string>
+    <string name="pref_title_about_community">Google+ Support Community</string>
+    <string name="pref_title_about_xda">Geek The Time on XDA</string>
+
 </resources>

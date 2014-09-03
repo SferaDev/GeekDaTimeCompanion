@@ -29,16 +29,22 @@
 
     <PreferenceCategory android:title="@string/pref_header_about" />
 
-    <Preference android:title="@string/pref_title_about_xda">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="http://goo.gl/gC3hgK" />
-    </Preference>
-
     <Preference android:title="@string/pref_title_about_quotes">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="https://github.com/SferaDev/GeekDaTimeQuotes/blob/master/quotes" />
+    </Preference>
+
+    <Preference android:title="@string/pref_title_about_community">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://plus.google.com/communities/111582325758542542769" />
+    </Preference>
+
+    <Preference android:title="@string/pref_title_about_xda">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://goo.gl/gC3hgK" />
     </Preference>
 
 </PreferenceScreen>
