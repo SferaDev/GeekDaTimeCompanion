@@ -110,7 +110,7 @@ public class StartActivity extends Activity {
                             cancelSearch();
                         }
                     };
-                    mQuitHandler.postDelayed(mQuitRunnable, 3500);
+                    mQuitHandler.postDelayed(mQuitRunnable, 2500);
                 } else {
                     Runnable mShowErrorRunnable = new Runnable() {
                         @Override
@@ -123,7 +123,7 @@ public class StartActivity extends Activity {
                 }
             }
         };
-        mQuitHandler.postDelayed(mShowTextRunnable, 2500);
+        mQuitHandler.postDelayed(mShowTextRunnable, 3500);
     }
 
     private void cancelSearch() {

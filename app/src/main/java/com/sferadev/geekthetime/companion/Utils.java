@@ -47,15 +47,7 @@ public class Utils {
     public static boolean mStartShown = false;
     public static final String downloadURL = "https://raw.githubusercontent.com/SferaDev/GeekDaTimeQuotes/master/quotes";
     public static final File downloadLocation = new File(Environment.getExternalStorageDirectory() + "/.GeekTheTime/");
-    static String mWeather;
-    static String mIP;
-    static String mGitHub;
-    static String mMeme;
-    static String mXDA;
-    static String mAndroidPolice;
-    static String mPhandroid;
-    static String mReddit;
-    static String mBTC;
+    static String mWeather, mIP, mGitHub, mMeme, mXDA, mTC, mAndroidPolice, mPhandroid, mReddit, mBTC;
 
     public static void startAppOnPebble() {
         PebbleKit.startAppOnPebble(getContext(), Utils.PEBBLE_APP_UUID);
@@ -136,6 +128,13 @@ public class Utils {
             case "XDA":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, "XDA: " + getXDAFeed());
+                } else {
+                    createToast("DEBUG: Error on " + string);
+                }
+                break;
+            case "TC":
+                if (isNetworkAvailable()) {
+                    sendString(KEY_TAG, "TC: " + getTCFeed());
                 } else {
                     createToast("DEBUG: Error on " + string);
                 }
@@ -339,6 +338,32 @@ public class Utils {
         try {
             thread.join();
             return mMeme;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
+
+    public static String getTCFeed() {
+        final RssParser rss = new RssParser();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RssFeed feed = rss.load("http://feeds.feedburner.com/TechCrunch/");
+                    Random r = new Random();
+                    List<RssItemBean> items = feed.getItems();
+                    RssItemBean item = items.get(r.nextInt(items.size()));
+                    mTC = item.getTitle();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            return mTC;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
