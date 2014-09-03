@@ -56,12 +56,11 @@ public class Utils {
     public static void sendString(int key, String string) {
         try {
             startAppOnPebble();
-            createToast("DEBUG: Item Sent");
             PebbleDictionary data = new PebbleDictionary();
             data.addString(key, string);
             PebbleKit.sendDataToPebble(getContext(), PEBBLE_APP_UUID, data);
         } catch (Exception e) {
-            createToast("Error: Pebble not found");
+            createToast("Pebble not found");
         }
     }
 
@@ -92,7 +91,7 @@ public class Utils {
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, getWeather());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "DATE":
@@ -108,67 +107,67 @@ public class Utils {
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, "IP: " + getIP());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "GITHUB_STATUS":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, "GitHub: " + getGitHubStatus());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "AUTO_MEME":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, getAutoMeme());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "XDA":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, "XDA: " + getXDAFeed());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "TC":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, "TC: " + getTCFeed());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "AP":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, "AP: " + getAndroidPoliceFeed());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "PHANDROID":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, "Phandroid: " + getPhandroidFeed());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "REDDIT_CONTENT":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, getReddit());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             case "BTC":
                 if (isNetworkAvailable()) {
                     sendString(KEY_TAG, getBTC());
                 } else {
-                    createToast("DEBUG: Error on " + string);
+                    createToast("No internet for: " + string);
                 }
                 break;
             default:
-                createToast("DEBUG: Error on " + string);
+                createToast("Issue with: " + string);
                 throw new IllegalArgumentException("Invalid option" + string);
         }
     }
