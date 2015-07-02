@@ -7,12 +7,18 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
+import com.samsung.android.sdk.multiwindow.SMultiWindow;
+import com.samsung.android.sdk.multiwindow.SMultiWindowActivity;
+
 import static com.sferadev.geekthetime.companion.App.getContext;
 import static com.sferadev.geekthetime.companion.Utils.isServiceRunning;
 import static com.sferadev.geekthetime.companion.Utils.startAppOnPebble;
 import static com.sferadev.geekthetime.companion.Utils.updateBehaviour;
 
 public class GeekActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private SMultiWindow mMultiWindow = null;
+    private SMultiWindowActivity mMultiWindowActivity = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,6 +27,14 @@ public class GeekActivity extends PreferenceActivity implements SharedPreference
         if (isServiceRunning(UpdateService.class)) {
             Intent i = new Intent(this, UpdateService.class);
             this.startService(i);
+        }
+
+        try {
+            mMultiWindow = new SMultiWindow();
+            mMultiWindow.initialize(this);
+            mMultiWindowActivity = new SMultiWindowActivity(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         addPreferencesFromResource(R.xml.pref_main);
