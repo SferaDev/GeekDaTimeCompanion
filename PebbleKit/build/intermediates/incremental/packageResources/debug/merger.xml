@@ -1,25 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="main" >
-        <source path="/host/workspace/GeekDaTimeCompanion/pEBBLE_KIT/src/main/res" >
-            <file
-                name="main"
-                path="/host/workspace/GeekDaTimeCompanion/pEBBLE_KIT/src/main/res/layout/main.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                path="/host/workspace/GeekDaTimeCompanion/pEBBLE_KIT/src/main/res/values/strings.xml"
-                qualifiers="" >
-                <string name="app_name" >PEBBLE_SPORTS_SDK
-                </string>
-            </file>
-        </source>
-        <source path="/host/workspace/GeekDaTimeCompanion/pEBBLE_KIT/build/generated/res/rs/debug" />
-        <source path="/host/workspace/GeekDaTimeCompanion/pEBBLE_KIT/build/generated/res/generated/debug" />
-    </dataSet>
-    <dataSet config="debug" >
-        <source path="/host/workspace/GeekDaTimeCompanion/pEBBLE_KIT/src/debug/res" />
-    </dataSet>
-
-</merger>
+<merger version="3"><dataSet config="main"><source path="E:\workspace\github\GeekDaTimeCompanion\PebbleKit\src\main\res"><file name="main" path="E:\workspace\github\GeekDaTimeCompanion\PebbleKit\src\main\res\layout\main.xml" qualifiers="" type="layout"/><file path="E:\workspace\github\GeekDaTimeCompanion\PebbleKit\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">PEBBLE_SPORTS_SDK</string></file></source><source path="E:\workspace\github\GeekDaTimeCompanion\PebbleKit\build\generated\res\rs\debug"/><source path="E:\workspace\github\GeekDaTimeCompanion\PebbleKit\build\generated\res\generated\debug"/></dataSet><dataSet config="debug"><source path="E:\workspace\github\GeekDaTimeCompanion\PebbleKit\src\debug\res"/></dataSet><mergedItems/></merger>
