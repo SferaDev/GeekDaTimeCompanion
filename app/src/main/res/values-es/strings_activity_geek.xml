@@ -1,0 +1,56 @@
+<resources>
+    <string name="pref_title_open_app">Abrir Geek The Time en tu Pebble</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_header_extras">Extras</string>
+    <string name="pref_header_about">Acerca de Geek The Time</string>
+
+    <string name="pref_title_extras">Mostrar información adicional</string>
+    <string name="pref_title_choose_tag">Elija el comportamiento deseado</string>
+    <string name="pref_description_choose_tag">Seleccione la información de la pantalla del reloj que se debe presentar</string>
+    <string-array name="pref_tags_entries">
+        <item>Cita al azar</item>
+        <item>Sentencia personalizada</item>
+        <item>Tiempo</item>
+        <item>Fecha</item>
+        <item>Conectividad</item>
+        <item>Batería del teléfono</item>
+        <item>Mi IP</item>
+        <item>Estado de GitHub</item>
+        <item>Auto Meme</item>
+        <item>XDA Portal</item>
+        <item>TechCrunch</item>
+        <item>Android Police</item>
+        <item>Phandroid</item>
+        <item>Reddit</item>
+        <item>Bitcoin Promedio (24h)</item>
+    </string-array>
+    <string-array name="pref_tags_values">
+        <item>RANDOM_QUOTE</item>
+        <item>CUSTOM_SENTENCE</item>
+        <item>WEATHER</item>
+        <item>DATE</item>
+        <item>CARRIER</item>
+        <item>PHONE_BATTERY</item>
+        <item>IP</item>
+        <item>GITHUB_STATUS</item>
+        <item>AUTO_MEME</item>
+        <item>XDA</item>
+        <item>TC</item>
+        <item>AP</item>
+        <item>PHANDROID</item>
+        <item>REDDIT_CONTENT</item>
+        <item>BTC</item>
+    </string-array>
+
+    <string name="pref_title_custom_quote">Tag: Sentencia personalizada</string>
+    <string name="pref_title_weather_location">Tiempo: Ubicación Deseada</string>
+
+    <string name="pref_title_enable_theme">Activar Opciones Temas</string>
+    <string name="pref_title_bt_show">Mostrar Estado de Bluetooth</string>
+    <string name="pref_title_battery_show">Mostrar Estado de Batería</string>
+
+    <string name="pref_title_about_quotes">Proponer nuevas Citas</string>
+    <string name="pref_title_about_community">Google+</string>
+    <string name="pref_title_about_xda">Geek The Time en XDA</string>
+
+</resources>
